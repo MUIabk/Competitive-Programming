@@ -1,5 +1,6 @@
 class type
 {
+public:
     int mn;
     type(){mn=1e9;}
     type(int x){mn=x;}
