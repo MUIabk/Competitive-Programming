@@ -36,7 +36,7 @@ class SGT
 			lazy[node*2] = lazy[node];
 			lazy[node*2 + 1] = lazy[node]; 
 		}
-		st[node].mn = lazy[node];
+		st[node] = type(lazy[node]);
 		cLazy[node] = 0;
 	}
 
@@ -44,7 +44,7 @@ class SGT
 	{
 		if(L==R)
 		{
-			st[node].mn = 1e9;
+			st[node] = type();
 			return;
 		}
 		int M=(L + R)/2;
