@@ -1,0 +1,23 @@
+/* TODO:
+ - //https://codeforces.com/contest/1594/problem/D - Bipartite graph
+ - //https://codeforces.com/contest/1637/problem/D DP
+ - //https://codeforces.com/contest/1422/problem/C DP
+ - //https://codeforces.com/contest/2/problem/B DP on grid
+ - //https://codeforces.com/problemset/problem/1633/D - Double DP (MUST DO)
+ - //https://codeforces.com/contest/1625/problem/C - DP (MUST DO)
+ - //https://codeforces.com/problemset/problem/987/D (Shortest paths)
+ - //https://codeforces.com/contest/633/problem/A
+ - //https://codeforces.com/contest/59/problem/E 2000 rated graph
+ - //https://codeforces.com/problemset/problem/1607/F SCC + DP
+ - //https://codeforces.com/contest/1557/problem/C XOR + DP
+ - //https://codeforces.com/blog/entry/66176 - Derangements in unsorted array
+ - //https://codeforces.com/contest/61/problem/E Fenwick Tree/Ordered Set
+ - //https://codeforces.com/contest/1462/problem/D DP + Prefix sums and  maps/binary search
+ - //https://codeforces.com/contest/1475/problem/D Greedy + Binary search
+ - //https://codeforces.com/contest/1624/problem/G MST
+ - //https://codeforces.com/problemset/problem/1650/E - Binary search
+ - //https://www.codechef.com/START30B/problems/MLIS - LIS variant
+ - //https://codeforces.com/contest/1702/problem/G2 - Trees (LCA)
+ - //https://leetcode.com/contest/weekly-contest-312/problems/number-of-good-paths/ - DSU
+ - //https://leetcode.com/contest/weekly-contest-320/problems/number-of-beautiful-partitions/ -> NEED TO OPTIMISE DP
+*/
