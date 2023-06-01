@@ -18,7 +18,7 @@ class BIT
 		bit.assign(n+1, type());
 	}
 
-	void update(int idx, int val,int num)
+	void add(int idx, int val)
 	{
 		while(idx <= N)
 		{
@@ -26,7 +26,12 @@ class BIT
 			idx += idx & -idx;
 		}
 	}
-
+	
+	void range_add(int l, int r, int val) {		//just like difference array
+	    add(l, val);
+	    add(r + 1, -val);
+	}
+	
 	type pref(int idx)
 	{
 		type ans=type();
