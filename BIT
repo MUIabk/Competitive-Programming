@@ -1,29 +1,38 @@
-struct BIT
+class type{
+	public:
+	int mn;
+	type(){mn=0;}
+	type(int x){
+		mn=x;
+	}
+};
+class BIT
 {
+	public:
 	int N;
-	vector<int> bit;
+	vector<type> bit;
 
-	void init(int n)
+	BIT(int n)
 	{
 		N = n;
-		bit.assign(n + 1, 0);
+		bit.assign(n+1, type());
 	}
 
-	void update(int idx, int val)
+	void update(int idx, int val,int num)
 	{
 		while(idx <= N)
 		{
-			bit[idx] += val;
+			bit[idx].mn += val;
 			idx += idx & -idx;
 		}
 	}
 
-	int pref(int idx)
+	type pref(int idx)
 	{
-		int ans = 0;
+		type ans=type();
 		while(idx > 0)
 		{
-			ans += bit[idx];
+			ans.mn += bit[idx].mn;
 			idx -= idx & -idx;
 		}
 		return ans;
@@ -31,7 +40,7 @@ struct BIT
 
 	int rsum(int l, int r)
 	{
-		return pref(r) - pref(l - 1);
+		return pref(r).mn - pref(l - 1).mn;
 	}
 
 	//returns first index such that pref[idx] >= val
@@ -41,9 +50,9 @@ struct BIT
 		int curSum = 0, pos = 0;
 		for(int i = log2(N) + 1; i >= 0; i--)
 		{
-			if(pos + (1 << i) < N && curSum + bit[pos + (1 << i)] < val)
+			if(pos + (1 << i) < N && curSum + bit[pos + (1 << i)].mn < val)
 			{
-				curSum += bit[pos + (1 << i)];
+				curSum += bit[pos + (1 << i)].mn;
 				pos += (1 << i);
 			}
 		}
@@ -54,7 +63,7 @@ struct BIT
 	{
 		while(idx <= N)
 		{
-			bit[idx] = max(bit[idx], val);
+			bit[idx].mn = max(bit[idx].mn, val);
 			idx += idx & -idx;
 		}
 	}
@@ -64,7 +73,7 @@ struct BIT
 		int ans = -2e9;
 		while(idx > 0)
 		{
-			ans = max(ans, bit[idx]);
+			ans = max(ans, bit[idx].mn);
 			idx -= idx & -idx;
 		}
 		return ans;
