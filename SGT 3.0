@@ -9,13 +9,9 @@ struct SGT {
     SGT(int a_len, vector<ll> &a) { // change if type updated
         arr = a;
         n = a_len;
-        s = 1;
-        while(s < 2 * n){
-            s = s << 1;
-        }
-        tree.resize(s); fill(all(tree), Node());
-        lazy.resize(s); fill(all(lazy), false);
-        updates.resize(s); fill(all(updates), Update());
+        tree.resize(4 * n); fill(all(tree), Node());
+        lazy.resize(4 * n); fill(all(lazy), false);
+        updates.resize(4 * n); fill(all(updates), Update());
         build(1, n, 1);
     }
     void build(int start, int end, int index) { // Never change this
