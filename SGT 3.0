@@ -59,7 +59,7 @@ struct SGT {
     }
     Node query(int start, int end, int index, int left, int right) { // Never change this
         if (start > right || end < left)
-            return Node(1);
+            return Node();
         if (start >= left && end <= right){
             pushdown(index, start, end);
             return tree[index];
