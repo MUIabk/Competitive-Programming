@@ -1,4 +1,5 @@
-template <class T> struct SegTree {
+int A[N];
+template <class T> struct SGT {
 	int n, N; vector <T> tree, lazy;
 	const T ID = 0;
 	T comb(T a, T b) { return min(a, b); }
