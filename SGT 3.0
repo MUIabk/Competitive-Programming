@@ -16,7 +16,7 @@ struct SGT {
     }
     void build(int start, int end, int index) { // Never change this
         if (start == end)   {
-            tree[index].val = arr[start];
+            tree[index] = Node(arr[start]);
             return;
         }
         int mid = (start + end) / 2;
