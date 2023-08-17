@@ -338,4 +338,4 @@ std::vector<Point<T>> hp(std::vector<Line<T>> lines) {
     return std::vector(ps.begin(), ps.end());
 }
  
-using P = Point<i64>;
+using P = Point<long long>;
