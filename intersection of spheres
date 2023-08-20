@@ -1,0 +1,8 @@
+auto chk=[&](int x,int y,int z,int r,int x1,int y1,int z1,int r1){
+    int dis=(x-x1)*(x-x1)+(y-y1)*(y-y1)+(z-z1)*(z-z1);double val=0;
+    if(dis>=(r+r1)*(r+r1))return val;//no intersection
+    double d=sqrtl(dis);
+    if(d+r<=r1)return 4.0/3.0*PI*r*r*r;//full intersection
+    val=PI/12.0/d*(r+r1-d)*(r+r1-d)*(dis+2.0*d*(r+r1)-3.0*(r-r1)*(r-r1));//partial intersection formula
+    return val;
+  };
