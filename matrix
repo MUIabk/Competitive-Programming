@@ -1,15 +1,15 @@
-template<class T, int N> struct Matrix {
+template<class T, int N,const int mod> struct Matrix {
 	typedef Matrix M;
 	array<array<T, N>, N> d{};
 	M operator*(const M& m) const {
 		M a;
 		FOR(i,0,N) FOR(j,0,N)
-			FOR(k,0,N) a.d[i][j] += d[i][k]*m.d[k][j],a.d[i][j]%=mod1;
+			FOR(k,0,N) a.d[i][j] += d[i][k]*m.d[k][j],a.d[i][j]%=mod;
 		return a;
 	}
 	vector<T> operator*(const vector<T>& vec) const {
 		vector<T> ret(N);
-		FOR(i,0,N) FOR(j,0,N) ret[i] += d[i][j] * vec[j],ret[i]%=mod1;
+		FOR(i,0,N) FOR(j,0,N) ret[i] += d[i][j] * vec[j],ret[i]%=mod;
 		return ret;
 	}
 	M operator^(ll p) const {
