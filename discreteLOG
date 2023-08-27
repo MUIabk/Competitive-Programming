@@ -1,4 +1,4 @@
-int dlog(int a, int b, int m) {
+int dlog(int a, int b, int m) {//primitive root of 1e9+7=5,998244353=3
     int n = (int) sqrt (m + .0) + 1;
  
     int an = 1;
