@@ -1,11 +1,4 @@
-class type{
-	public:
-	int mn;
-	type(){mn=0;}
-	type(int x){
-		mn=x;
-	}
-};
+template<class type>
 class BIT
 {
 	public:
@@ -82,5 +75,13 @@ class BIT
 			idx -= idx & -idx;
 		}
 		return ans;
+	}
+};
+class type{
+	public:
+	int mn;
+	type(){mn=0;}
+	type(int x){
+		mn=x;
 	}
 };
