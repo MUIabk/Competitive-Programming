@@ -1,12 +1,12 @@
-template<int MXBIT> 
+template<class T,int MXBIT> 
 struct Trie{
     struct Node{
-        int end_cnt = 0;
+        T end_cnt = 0;
         int idx;
-        int cnt[MXBIT];
+        T cnt[MXBIT];
         int next[MXBIT];
         Node(){
-            for(int i = 0 ; i < MXBIT ; i ++) next[i] = -1 , cnt[i] = 0;
+            for(int i = 0 ; i < MXBIT ; i ++) next[i] = -1 , cnt[i] = T();
         }
     };
     vector<Node>nodes;
@@ -24,19 +24,19 @@ struct Trie{
                 nodes[curr].next[ch-'0'] = nodes.size();
                 nodes.push_back(def);
             }
-            nodes[curr].cnt[ch-'0']++;
+            nodes[curr].cnt[ch-'0']+=T(1);
             curr = nodes[curr].next[ch-'0'];
         }
         nodes[curr].idx = id;
-        nodes[curr].end_cnt++;
+        nodes[curr].end_cnt+=T(1);
     }
     void del(string s){
         int curr = 0;
         for(auto ch: s){
-            nodes[curr].cnt[ch-'0']--;
+            nodes[curr].cnt[ch-'0']-=T(1);
             curr = nodes[curr].next[ch-'0'];
         }
-        nodes[curr].end_cnt--;
+        nodes[curr].end_cnt-=T(1);
     }
     bool search(string word){
         int curr = 0;
@@ -47,7 +47,7 @@ struct Trie{
                 curr = nodes[curr].next[ch-'0'];
             }
         }
-        return (bool)nodes[curr].end_cnt;
+        return nodes[curr].end_cnt>T();
     }
     vector<int> dfs (string s){
         int x = 0 , curr = 0;
@@ -72,7 +72,7 @@ struct Trie{
     ll max_xor(string s){
         ll curr = 0 , ans = 0 , len = k-1;
         for(auto ch: s){
-            if(nodes[curr].next[(ch-'0')^1] == -1 || nodes[curr].cnt[(ch-'0')^1] <= 0){
+            if(nodes[curr].next[(ch-'0')^1] == -1 || nodes[curr].cnt[(ch-'0')^1] <= T(0)){
                 curr = nodes[curr].next[ch-'0'];
             }else{
                 curr = nodes[curr].next[(ch-'0')^1];
