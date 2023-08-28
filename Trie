@@ -83,7 +83,7 @@ struct Trie{
         return ans;
     }
 };
-string to_string(int x, int k) {
+string to_str(int x, int k) {
     string ans;
     while (x) {
         ans += '0' + (x % 2);
