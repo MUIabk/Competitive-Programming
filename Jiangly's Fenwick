@@ -27,7 +27,7 @@ struct Fenwick {
     }
     
     T rangeSum(int l, int r) {
-        return sum(r) - sum(l);
+        return sum(r) - sum(l-1);
     }
     
     int kth(T k) {
