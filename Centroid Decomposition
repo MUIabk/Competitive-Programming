@@ -15,7 +15,7 @@ void dfs(int u, int par)
 	}
 }
 
-int centroid(int u, int par)
+int centroid(int u, int par)//this par will be assigned to the centroid
 {
 	for(auto &it:g[u])
 	{
