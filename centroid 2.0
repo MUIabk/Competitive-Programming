@@ -1,4 +1,4 @@
-struct CentroidDecomposition {
+struct CentroidDecomposition {//0 based indexing
     vector<vi> cd, &e;
     vector<vector<pii>> dist;
     vector<bool> tocheck, col;
@@ -34,7 +34,7 @@ struct CentroidDecomposition {
         }
     }
     int closest(int u) {
-        int best = INF;
+        int best = inf;
         for (pii vd : dist[u]) {
             int v = vd.first, d = vd.second;
             if (distances[v].size() > 0) {
@@ -43,7 +43,7 @@ struct CentroidDecomposition {
                 best = best < nd ? best : nd;
             }
         }
-        if (best == INF) best = -1;
+        if (best == inf) best = -1;
         return best;
     }
     void toggle(int u) {
