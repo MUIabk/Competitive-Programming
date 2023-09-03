@@ -1,0 +1,84 @@
+struct CentroidDecomposition {
+    vector<vi> cd, &e;
+    vector<vector<pii>> dist;
+    vector<bool> tocheck, col;
+    vi size, p,par;
+    vector<set<pii>> distances;
+    int root;
+    CentroidDecomposition(vector<vi> &tree) : e(tree) {
+        int sz = e.size();
+        tocheck.assign(sz, true);
+        col.assign(sz, false);
+        cd.assign(sz, vi());
+        p.assign(sz, -1);
+        size.assign(sz, 0);
+        dist.assign(sz, vector<pii>());
+        distances.assign(sz, set<pii>());
+        dfs(0);
+        root = decompose(0, sz);
+    }
+    void dfs(int u) {
+        for (int v : e[u]) {
+            if (v == p[u]) continue;
+            p[v] = u;
+            dfs(v);
+            size[u] += 1 + size[v];
+        }
+    }
+    void dfs2(int u, int d, int s, int p) {
+        if (!tocheck[u]) return;
+        dist[u].push_back({s, d});
+        for (int v : e[u]) {
+            if (!tocheck[v] || v == p) continue;
+            dfs2(v, d + 1, s, u);
+        }
+    }
+    int closest(int u) {
+        int best = INF;
+        for (pii vd : dist[u]) {
+            int v = vd.first, d = vd.second;
+            if (distances[v].size() > 0) {
+                auto it = distances[v].begin();
+                int nd = d + it->first;
+                best = best < nd ? best : nd;
+            }
+        }
+        if (best == INF) best = -1;
+        return best;
+    }
+    void toggle(int u) {
+        col[u] = !col[u];
+        for (pii vd : dist[u]) {
+            int v = vd.first, d = vd.second;
+            if (col[u])
+                distances[v].insert({d, u});
+            else
+                distances[v].erase({d, u});
+        }
+    }
+    int decompose(int _u, int sz) {
+        int u = _u;
+        while (true) {
+            int nu = -1;
+            for (int v : e[u]) {
+                if (!tocheck[v] || v == p[u]) continue;
+                if (1 + size[v] > sz / 2) nu = v;
+            }
+            if (sz - 1 - size[u] > sz / 2 && p[u] != -1
+                &&tocheck[p[u]]) nu = p[u];
+            if (nu != -1) u = nu; else break;
+        }
+        for (int v = p[u]; v != -1 && tocheck[v]; v = p[v])
+            size[v] -= 1 + size[u];
+        dfs2(u, 0, u, -1);
+        tocheck[u] = false;
+        for (int v : e[u]) {
+            if (!tocheck[v]) continue;
+            int V2 = 1 + size[v];
+            if (v == p[u]) V2 = sz - 1 - size[u];
+            int X=decompose(v, V2);
+            cd[u].push_back(X);
+        }
+        return u;
+    }
+};
