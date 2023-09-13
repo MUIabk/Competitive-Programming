@@ -1,0 +1,36 @@
+Hash operator*(const Hash& u, const Hash& v) {
+  Hash t;
+  for (int i = 0; i < 10; i++)
+    t[i] = 1LL * u[i] * v[i] % mod1;
+  return t;
+}
+ 
+Hash operator+(const Hash& u, const Hash& v) {
+  Hash t;
+  for (int i = 0; i < 10; i++)
+    t[i] = (u[i] + v[i]) % mod1;
+  return t;
+}
+ 
+Hash operator-(const Hash& u, const Hash& v) {
+  Hash t;
+  for (int i = 0; i < 10; i++)
+    t[i] = (u[i] - v[i] + mod1) % mod1;
+  return t;
+}
+ 
+Hash Base;
+ 
+Hash mult_base(const Hash& u) {
+  Hash t;
+  for (int i = 0; i < 10; i++)
+    t[i] = (1LL * u[i] * Base[i]) % mod1;
+  return t;
+}
+ 
+Hash add_one(const Hash& u) {
+  Hash t;
+  for (int i = 0; i < 10; i++)
+    t[i] = (u[i] + 1) % mod1;
+  return t;
+}
