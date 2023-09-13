@@ -1,0 +1,49 @@
+vector<int> g[N];
+bool sym[N];
+ 
+typedef array<int, 10> H;
+ 
+H operator*(const H& u, const H& v) {
+  H t;
+  for (int i = 0; i < 10; i++)
+    t[i] = 1LL * u[i] * v[i] % P;
+  return t;
+}
+ 
+H B, C;
+ 
+H f(const H& u) {
+  H t;
+  for (int i = 0; i < 10; i++)
+    t[i] = (1LL * u[i] * B[i] + C[i]) % P;
+  return t;
+}
+ 
+ 
+H dfs(int p, int i) {
+  H x;
+  fill(x.begin(), x.end(), 1);
+  vector<pair<H, int>> t;
+  for (int j : g[i])
+    if (p != j) {
+      H y = dfs(i, j);
+      x = x * y;
+      t.push_back({y, j});
+    }
+  sort(t.begin(), t.end());
+  vector<pair<H, int>> rest;
+  for (auto [y, j] : t)
+    if (rest.empty() || rest.back().first != y)
+      rest.push_back({y, j});
+    else
+      rest.pop_back();
+  sym[i] = rest.size() == 0 || (rest.size() == 1 && sym[rest[0].second]);
+  return f(x);
+}
+
+
+int gen_base() {
+  static uniform_int_distribution<int> d(258, P - 1);
+  int b = d(rng);
+  return b % 2 == 0 ? b - 1 : b;
+}
