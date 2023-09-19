@@ -1,0 +1,21 @@
+bool check_primitive_root(const int& ph, const vi& to_check, const int& r, const int& n)
+{
+	for (int i = 0; i < sz(to_check); ++i)
+		if (pow_mod(r, to_check[i], n) == 1)
+			return false;
+	return (pow_mod(r, ph, n) == 1);
+}
+int primitive_root(const int& n)
+{
+	if (n < 3)
+		return n - 1;
+	int p = phi(n);
+	vpui f = fac.factor(p);
+	vi to_check(sz(f));
+	for (int i = 0; i < sz(f); ++i)
+		to_check[i] = p / f[i].X;
+	for (int i = 2; i < n; ++i)
+		if (check_primitive_root(p, to_check, i, n))
+			return i;
+	return -1;
+}
