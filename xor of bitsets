@@ -1,0 +1,24 @@
+const int B = 13;
+const int N = 1 << B;
+using Bit = bitset<N>;
+ 
+void xor_shift(Bit& b, const int i) {
+	static vector<pair<Bit, Bit>> shifters;
+	if (shifters.empty()) {
+		shifters.resize(B);
+		for (int i = 0; i < B; ++i)
+			for (int j = 0; j < N; ++j)
+				if (j & 1 << i)
+					shifters[i].second[j] = true;
+				else
+					shifters[i].first[j] = true;
+	}
+	b = ((b & shifters[i].X) << (1 << i)) | ((b & shifters[i].Y) >> (1 << i));
+}
+ 
+Bit xor_convolve(Bit b, const int k) {
+	for (int i = 0; i < B; ++i)
+		if (k & 1 << i)
+			xor_shift(b, i);
+	return b;
+}
