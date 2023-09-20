@@ -226,3 +226,8 @@ Hash add_one(const Hash& u) {
     t[i] = (u[i] + 1);
   return t;
 }
+int gen_base() {
+  static uniform_int_distribution<int> d(258, P - 1);
+  int b = d(rng);
+  return b % 2 == 0 ? b - 1 : b;
+}
