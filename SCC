@@ -1,7 +1,7 @@
 struct SCC{
     int n;
     vector<vector<int>> g, gr; 
-    vector<int> order, comp ; 
+    vector<int> topo, comp ; 
     vector<bool> vis; 
     SCC(int _n) {
         n = _n ; 
@@ -15,25 +15,16 @@ struct SCC{
     void dfs1(int node) {
         vis[node] = 1 ;
         for(auto i : g[node]) if(!vis[i]) dfs1(i) ; 
-        order.push_back(node) ;  
+        topo.push_back(node) ;  
     }
     void dfs2(int node, int c) {
         comp[node] = c ;
         for(auto i : gr[node]) if(comp[i] == -1) dfs2(i, c) ; 
     }
-    void scc() {
-        for(int i = 1 ; i <= n ; ++i) if(!vis[i]) dfs1(i) ; 
-        int cnt = 1 ; 
-        vector<int> c(n+1) ; 
-        for(int i = 0 ; i < n ; ++i) {
-            int v = order[n-i-1] ; 
-            if(comp[v] == -1) dfs2(v, cnt++) ; 
-        } 
-        for(int i = 1 ; i <= n ; ++i) c[comp[i]] ++ ; 
-        for(int i = 1 ; i <= n ; ++i) {
-            if(c[comp[i]] > 1 && Vis[i]) {
-                d[i] = -1 ; 
-            }
-        }
+    void scc(){
+        for(int i=0;i<n;i++)if(!vis[i])dfs1(i);
+        int comps=0;for(int i=n-1;i>=0;i--)if(comp[topo[i]]==-1)dfs2(topo[i],comps++);
+        set<int>components[comps];
+        for(int i=0;i<n;i++)components[comp[i]].insert(i);
     }
 };
