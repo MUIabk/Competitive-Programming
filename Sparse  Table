@@ -1,0 +1,32 @@
+template <typename T>
+struct sparse{
+ 
+    vector<vector<T>> table;
+    vector<T> findlog;
+ 
+    sparse(vector<T> &A){
+        int N = A.size();
+        findlog.resize(N + 1);
+        
+        findlog[1] = 0;
+        for(int i = 2; i < findlog.size(); i++) findlog[i] = findlog[i / 2] + 1;
+ 
+        int LOG = findlog[N] + 1;
+        table = vector<vector<T>>(N, vector<T>(LOG));
+ 
+        for (int i = 0; i < N; i++){
+            table[i][0] = A[i];
+        }
+        
+        for (int i = 1; i < LOG; i++){
+            for (int j = 0; j + (1 << (i - 1)) < N ; j++){
+                table[j][i] = (table[j][i - 1] & table[j + (1 << (i - 1))][i - 1]);
+            }
+        }
+    }
+ 
+    T query(int L, int R){
+        int d = findlog[R - L + 1];
+        return (table[L][d] & table[R - (1 << d) + 1][d]);
+    }
+};
