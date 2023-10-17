@@ -1,73 +1,60 @@
-struct TwoSAT
-{
-	static const int MAXV=1e5+5;
-
-	int n, cnt;
-	vector<int> g[MAXV], rg[MAXV]; //g=forward, rg=backward
-	bool vis[MAXV];
-	int order[MAXV], comp[MAXV];
-
-	void init(int curn)
-	{
-		n=curn;
-		for(int i=0;i<n;i++)
-		{	
-			g[i].clear();
-			rg[i].clear();
-		}
+///Zero Indexed
+///F=(x_0 or y_0) and (x_1 or y_1) and ... (x_{vars-1} or y_{vars-1})
+///here y_i belongs to x_i
+///is there any assignment of x_i such that F=true
+///for (x_0 xor y_0) and (x_1 xor y_1)...
+///replace (x_i xor y_i) by (x_i or y_i) and (not x_i or not y_i)
+struct twosat {
+	int n;	/// total size combining +, -. must be even.
+	vector< vector<int> > g, gt;	/// graph, transpose graph
+	vector<bool> vis, res;	/// visited and resulting assignment
+	vector<int> comp;	/// component number
+	stack<int> ts;	/// topsort
+ 
+	twosat(int vars=0) {
+		n = (vars << 1);
+		g.resize(n);
+		gt.resize(n);
 	}
-
-	void add(int u, int v)
-	{
-		g[u].push_back(v);
-		rg[v].push_back(u);
+ 
+	/// zero indexed, be careful
+	/// (x_a or (not x_b))-> af=1,bf=0
+	void add(int a, bool af, int b, bool bf) {
+		a += a+(af^1);
+		b += b+(bf^1);
+		g[a^1].push_back(b);	/// !a => b
+		g[b^1].push_back(a);	/// !b => a
+		gt[b].push_back(a^1);
+		gt[a].push_back(b^1);
 	}
-
-	void dfs1(int u)
-	{
+ 
+	void dfs1(int u) {
 		vis[u] = true;
-		for(auto it:g[u])
-			if(!vis[it])
-				dfs1(it);
-		order[cnt++] = u;
+		for(int v : g[u]) if(!vis[v]) dfs1(v);
+		ts.push(u);
 	}
-
-	void dfs2(int u, int c)
-	{
+ 
+	void dfs2(int u, int c) {
 		comp[u] = c;
-		for(auto it:rg[u])
-			if(comp[it]==-1)
-				dfs2(it, c);
+		for(int v : gt[u]) if(comp[v] == -1) dfs2(v, c);
 	}
-
-	int solve(vector<int> &ans)
-	{
-		cnt=0;
-		memset(vis, 0, sizeof(vis));
-		for(int i=0;i<n;i++)
-			if(!vis[i])
-				dfs1(i);
-		memset(comp, -1, sizeof(comp));
-		int grp=0;
-		for(int i=n-1;i>=0;i--)
-		{
-			int u=order[i];
-			if(comp[u] == -1)
-				dfs2(u, grp++);
+	bool ok() {
+		vis.resize(n, false);
+		for(int i=0; i<n; ++i) if(!vis[i]) dfs1(i);
+ 
+		int scc = 0;
+		comp.resize(n, -1);
+		while(!ts.empty()) {
+			int u = ts.top();
+			ts.pop();
+			if(comp[u] == -1) dfs2(u, scc++);
 		}
-
-		for(int i=0;i<n;i+=2)
-			if(comp[i]==comp[i^1])
-				return 0;
-
-		ans.clear();
-
-		for(int i=0;i<n;i+=2)
-		{
-			int choose = (comp[i] > comp[i^1]) ? i : (i^1);
-			ans.push_back(choose);
+ 
+		res.resize(n/2);
+		for(int i=0; i<n; i+=2) {
+			if(comp[i] == comp[i+1]) return false;
+			res[i/2] = (comp[i] > comp[i+1]);
 		}
-
-		return 1;
+		return true;
 	}
 };
