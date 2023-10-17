@@ -17,32 +17,35 @@ struct twosat {
 		gt.resize(n);
 	}
  
-	/// zero indexed, be careful
-	/// (x_a or (not x_b))-> af=1,bf=0
+  //a or b is the conjunctive normal form
+  //!a=>b and !b=>a is the implicative normal form
+
+  // zero indexed, be careful
+	// (x_a or (not x_b))-> af=1,bf=0
 	void add(int a, bool af, int b, bool bf) {
 		a += a+(af^1);
 		b += b+(bf^1);
-		g[a^1].push_back(b);	/// !a => b
-		g[b^1].push_back(a);	/// !b => a
+		g[a^1].push_back(b);	                   // !a => b
+		g[b^1].push_back(a);	                   // !b => a
 		gt[b].push_back(a^1);
 		gt[a].push_back(b^1);
 	}
  
-	void dfs1(int u) {
+	void dfs1(int u) {                         //topo 
 		vis[u] = true;
 		for(int v : g[u]) if(!vis[v]) dfs1(v);
 		ts.push(u);
 	}
  
-	void dfs2(int u, int c) {
+	void dfs2(int u, int c) {                  //scc
 		comp[u] = c;
 		for(int v : gt[u]) if(comp[v] == -1) dfs2(v, c);
 	}
 	bool ok() {
-		vis.resize(n, false);
+		vis.resize(n, false);                   //find the topo
 		for(int i=0; i<n; ++i) if(!vis[i]) dfs1(i);
  
-		int scc = 0;
+		int scc = 0;                            //find the sccs
 		comp.resize(n, -1);
 		while(!ts.empty()) {
 			int u = ts.top();
@@ -50,11 +53,10 @@ struct twosat {
 			if(comp[u] == -1) dfs2(u, scc++);
 		}
  
-		res.resize(n/2);
+		res.resize(n);
 		for(int i=0; i<n; i+=2) {
-			if(comp[i] == comp[i+1]) return false;
-			res[i/2] = (comp[i] > comp[i+1]);
-		}
-		return true;
+			if(comp[i] == comp[i+1]) return false;           //access the value of variable x using 2*x
+			(comp[i] > comp[i+1] ? res[i] : res[i+1]) = 1;   //access the value of variable !x using 2*x+1
+		}return true;
 	}
 };
