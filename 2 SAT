@@ -60,3 +60,5 @@ struct twosat {
 		}return true;
 	}
 };
+//for same  -> st.add(u,0,v,1),st.add(u,1,v,0) as !u or v ==  u->v
+//for opp   -> st.add(u,0,v,0),st.add(u,1,v,1) as  u or v == !u->v
