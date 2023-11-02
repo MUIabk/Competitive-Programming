@@ -13,6 +13,7 @@ class BIT
 
 	void add(int idx, int val)
 	{
+		idx++;
 		while(idx <= N)
 		{
 			bit[idx].mn += val;
@@ -21,12 +22,14 @@ class BIT
 	}
 	
 	void range_add(int l, int r, int val) {		//just like difference array
+	    l++;r++;
 	    add(l, val);
 	    add(r + 1, -val);
 	}
 	
 	type pref(int idx)
 	{
+		idx++;
 		type ans=type();
 		while(idx > 0)
 		{
@@ -54,11 +57,12 @@ class BIT
 				pos += (1 << i);
 			}
 		}
-		return pos + 1;
+		return pos;
 	}
 
 	void updateMax(int idx, int val)
 	{
+		idx++;
 		while(idx <= N)
 		{
 			bit[idx].mn = max(bit[idx].mn, val);
@@ -68,6 +72,7 @@ class BIT
 
 	int prefMax(int idx)
 	{
+		idx++;
 		int ans = -2e9;
 		while(idx > 0)
 		{
