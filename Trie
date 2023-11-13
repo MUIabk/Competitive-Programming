@@ -69,8 +69,8 @@ struct Trie{
         return {ans, x, id};
 
     }
-    ll max_xor(string s){
-        ll curr = 0 , ans = 0 , len = k-1;
+    T max_xor(string s){
+        T curr = 0 , ans = 0 , len = k-1;
         for(auto ch: s){
             if(nodes[curr].next[(ch-'0')^1] == -1 || nodes[curr].cnt[(ch-'0')^1] <= T(0)){
                 curr = nodes[curr].next[ch-'0'];
@@ -83,13 +83,3 @@ struct Trie{
         return ans;
     }
 };
-string to_str(int x, int k) {
-    string ans;
-    while (x) {
-        ans += '0' + (x % 2);
-        x >>= 1;
-    }
-    while (ans.size() < k) ans += '0';
-    reverse(ans.begin(), ans.end());
-    return ans;
-}
