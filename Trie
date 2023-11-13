@@ -82,6 +82,17 @@ struct Trie{
         }
         return ans;
     }
+    T min_xor(string s){
+        T curr=0,ans=0,len=k-1;
+        for(auto ch:s){
+            if(nodes[curr].next[ch-'0']==-1 || nodes[curr].cnt[ch-'0']<=T(0)){
+                curr=nodes[curr].next[(ch-'0')^1];
+                ans^=(1<<len);
+            }else{
+                curr=nodes[curr].next[ch-'0'];
+            }--len;
+        }return ans;
+    }
 };
 string to_str(int x, int k) {
     string ans;
