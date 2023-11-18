@@ -6,6 +6,14 @@ struct SGT {
     vector<ll> arr; // type may change
     int n;
     int s;
+    SGT(int nn){
+      n=nn;
+      int s=1;
+      while(s<2*n)s<<=1;
+      tree.resize(s); fill(all(tree), Node());
+      lazy.resize(s); fill(all(lazy), false);
+      updates.resize(s); fill(all(updates), Update());
+    }
     SGT(int a_len, vector<ll> &a) { // change if type updated
         arr = a;
         n = a_len;
@@ -90,7 +98,7 @@ struct Node1 {
         val = p1; // may change
     }
     void merge(Node1 &l, Node1 &r) { // Merge two child nodes
-        val = min(l.val,r.val);  // may change
+        val = max(l.val,r.val);  // may change
     }
 };
 
@@ -103,9 +111,9 @@ struct Update1 {
         val = val1;
     }
     void apply(Node1 &a, int start, int end) { // apply update to given node
-        a.val += val; // may change
+        a.val = val; // may change
     }
     void combine(Update1& new_update, int start, int end){
-        val += new_update.val;
+        val = new_update.val;
     }
 };
