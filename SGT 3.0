@@ -80,12 +80,19 @@ struct SGT {
         ans.merge(l, r);
         return ans;
     }
-    void make_update(int left, int right, ll val) {  // pass in as many parameters as required
+    void update(int left, int right, ll val) {  // pass in as many parameters as required
         Update new_update = Update(val); // may change
         update(0, n - 1, 1, left, right, new_update);
     }
-    Node make_query(int left, int right) {
+    void update(int idx, ll val) {  // pass in as many parameters as required
+        Update new_update = Update(val); // may change
+        update(0, n - 1, 1, idx, idx, new_update);
+    }
+    Node query(int left, int right) {
         return query(0, n - 1, 1, left, right);
+    }
+    Node query(int idx) {
+        return query(0, n - 1, 1, idx, idx);
     }
 };
 
