@@ -21,7 +21,6 @@ struct Lift{
             if(u == p)  continue;
             dpth[u] = dpth[i] + 1;
             dfs(u, i, adj);
-            
         }
     }
     int kthanc(int node, int d) {
