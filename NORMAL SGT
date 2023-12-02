@@ -18,8 +18,8 @@ class Seg{
         if(ll<=l && rr>=r) return seg[i];
         int mid = l+r>>1;
         return get(_query(2*i+1,l,mid,ll,rr),_query(2*i+2,mid+1,r,ll,rr));
-    }
     public:
+    }
     Seg(int _n){
         n = _n;
         seg.resize(4*n,0);
