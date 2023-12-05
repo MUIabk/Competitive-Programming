@@ -22,7 +22,6 @@ class BIT
 	}
 	
 	void range_add(int l, int r, int val) {		//just like difference array
-	    l++;r++;
 	    add(l, val);
 	    add(r + 1, -val);
 	}
