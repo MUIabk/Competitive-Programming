@@ -1,40 +1,51 @@
-template<class T,const int b=31>
+template<class T>
 struct xbasis{
   vector<T>base;
-  int n;
-  xbasis(){
+  int n=0;
+  int b;
+  xbasis(int bb=31){
+    b=bb;
     base.resize(b);
-    n=0;
   }
-  xbasis(vector<T>&a){
+  xbasis(vector<T>&a,int bb=31){
+    b=bb;
     base.resize(b);
-    n=0;
     for(auto &x:a)insert(x);
   }
-  void insert(int x){
-    for(int i=b-1;i>=0;i--){
-      if(x>>i&1){
-        if(!base[i]){
-          base[i]=x;n++;
-          return;
-        }
-        x^=base[i];
-      }
-    }
+  T mn(T x){
+    if(n==b)return 0;
+    for(int i=0;i<n;i++)x=min(x,x^base[i]);
+    return x;
   }
-  T val(int t=1){               //0-min 1-max
-    int x=0;
-    for(int i=b-1;i>=0;i--){
-      if(base[i] and (((x>>i)&1)^t))x^=base[i];
-    }return x;
+  T mx(T x=0){
+    if(n==b)return T(1)<<b-1;
+    for(int i=0;i<n;i++)x=max(x,x^base[i]);
+    return x;
+  }
+  bool find(int x){
+    return mn(x)==0;
   }
   int size(){return n;}
-  bool find(int x){
-    for(int i=b-1;i>=0;i--){
-      if(x>>i&1){
-        if(!base[i])return false;
-        x^=base[i];
-      }
-    }return true;
+  void insert(T x){
+    x=mn(x);
+    if(!x)return;
+    base[n++]=x;
+    int k=n-1;
+    while(k>0 and base[k]>base[k-1]){
+      swap(base[k],base[k-1]);
+      k--;
+    }
+  }
+  void merge(const xbasis<T>&xx){
+    for(int i=0;i<xx.size() and n<b;i++){
+      add(xx.basis[i]);
+    }
+  }
+  void merge(const xbasis<T>&x,const xbasis<T>&xx){
+    if(x.n>xx.n){
+      *this=x;merge(xx);
+    }else {
+      *this=xx;merge(x);
+    }
   }
 };
