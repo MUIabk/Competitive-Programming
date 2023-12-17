@@ -1,0 +1,33 @@
+template<const int b=31>
+struct xbasis{
+  vector<int>basis;
+  int n;
+  xbasis(){
+    basis.resize(b);
+    n=0;
+  }
+  xbasis(vector<int>&a){
+    basis.resize(b);
+    n=0;
+    for(auto &x:a)insert(x);
+  }
+  void insert(int x){
+    for(int i=b-1;i>=0;i--){
+      if(x>>i&1){
+        if(!basis[i]){
+          basis[i]=x;n++;
+          return;
+        }
+        x^=basis[i];
+      }
+    }
+  }
+  bool find(int x){
+    for(int i=b-1;i>=0;i--){
+      if(x>>i&1){
+        if(!basis[i])return false;
+        x^=basis[i];
+      }
+    }return true;
+  }
+};
