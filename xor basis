@@ -1,32 +1,39 @@
-template<const int b=31>
+template<class T,const int b=31>
 struct xbasis{
-  vector<int>basis;
+  vector<T>base;
   int n;
   xbasis(){
-    basis.resize(b);
+    base.resize(b);
     n=0;
   }
-  xbasis(vector<int>&a){
-    basis.resize(b);
+  xbasis(vector<T>&a){
+    base.resize(b);
     n=0;
     for(auto &x:a)insert(x);
   }
   void insert(int x){
     for(int i=b-1;i>=0;i--){
       if(x>>i&1){
-        if(!basis[i]){
-          basis[i]=x;n++;
+        if(!base[i]){
+          base[i]=x;n++;
           return;
         }
-        x^=basis[i];
+        x^=base[i];
       }
     }
   }
+  T val(int t=1){               //0-min 1-max
+    int x=0;
+    for(int i=b-1;i>=0;i--){
+      if(base[i] and (((x>>i)&1)^t))x^=base[i];
+    }return x;
+  }
+  int size(){return n;}
   bool find(int x){
     for(int i=b-1;i>=0;i--){
       if(x>>i&1){
-        if(!basis[i])return false;
-        x^=basis[i];
+        if(!base[i])return false;
+        x^=base[i];
       }
     }return true;
   }
