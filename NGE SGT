@@ -1,0 +1,114 @@
+class SegTree {
+    vector<int>mn,mx;
+    int cnt;
+public:
+ 
+    SegTree(){}
+ 
+    SegTree(int n) {
+        mn.resize(4*n);
+        mx.resize(4*n);
+    }
+ 
+    void update(int pos,int val,int st,int en,int node) {
+        if(st > pos or en < pos) return;
+        if(st == en) {
+            mn[node] = val;
+            mx[node] = val;
+            return;
+        }
+        int mid = (st+en)/2;
+        update(pos,val,st,mid,2*node);
+        update(pos,val,mid+1,en,2*node+1);
+        mn[node] = min(mn[2*node],mn[2*node+1]);
+        mx[node] = max(mx[2*node],mx[2*node+1]);
+    }
+ 
+    int query_max(int l,int r,int st,int en,int node) {
+        if(st > r or en < l) return -inf;
+        if(st >= l and en <= r) return mx[node];
+        int mid = (st+en)/2;
+        return max(query_max(l,r,st,mid,2*node),query_max(l,r,mid+1,en,2*node+1));
+    }
+ 
+    int query_min(int l,int r,int st,int en,int node) {
+        if(st > r or en < l) return inf;
+        if(st >= l  and en <= r) return mn[node];
+        int mid = (st+en)/2;
+        return min(query_min(l,r,st,mid,2*node),query_min(l,r,mid+1,en,2*node+1));
+    }
+ 
+private:
+    void query_nge(int l,int r,int val,int st,int en,int node) {
+        if(st > r or en < l or cnt < st-l) return;
+        if(st >= l and en <= r and mx[node] <= val) {
+            cnt += en-st+1;
+            return;
+        } 
+        if(st == en) return;
+        int mid = (st+en)/2;
+        query_nge(l,r,val,st,mid,2*node);
+        query_nge(l,r,val,mid+1,en,2*node+1);
+    }
+ 
+    void query_nse(int l,int r,int val,int st,int en,int node) {
+        if(st > r or en < l or cnt < st-l) return;
+        if(st >= l and en <= r and mn[node] >= val) {
+            cnt += en-st+1;
+            return;
+        }
+        if(st == en) return;
+        int mid = (st+en)/2;
+        query_nse(l,r,val,st,mid,2*node);
+        query_nse(l,r,val,mid+1,en,2*node+1);
+    }
+ 
+    void query_pse(int l,int r,int val,int st,int en,int node) {
+        if(st > r or en < l or cnt < r-en) return;
+        if(st >= l and en <= r and mn[node] >= val) {
+            cnt += en-st+1;
+            return;
+        }
+        if(st == en) return;
+        int mid = (st+en)/2;
+        query_pse(l,r,val,mid+1,en,2*node+1);
+        query_pse(l,r,val,st,mid,2*node);
+    }
+ 
+    void query_pge(int l,int r,int val,int st,int en,int node) {
+        if(st > r or en < l or cnt < r-en) return;
+        if(st >= l and en <= r and mx[node] <= val) {
+            cnt += en-st+1;
+            return;
+        }
+        if(st == en) return;
+        int mid = (st+en)/2;
+        query_pge(l,r,val,mid+1,en,2*node+1);
+        query_pge(l,r,val,st,mid,2*node);
+    }
+ 
+public:
+    int next_greater_element(int pos,int val,int n) {
+        cnt = 0;
+        query_nge(pos+1,n-1,val,0,n-1,1);
+        return pos+cnt+1;
+    }
+ 
+    int next_smaller_element(int pos,int val,int n) {
+        cnt = 0;
+        query_nse(pos+1,n-1,val,0,n-1,1);
+        return pos+cnt+1;
+    }
+ 
+    int previous_greater_element(int pos,int val,int n) {
+        cnt = 0;
+        query_pge(0,pos-1,val,0,n-1,1);
+        return pos-cnt-1;
+    }
+ 
+    int previous_smaller_element(int pos,int val,int n) {
+        cnt = 0;
+        query_pse(0,pos-1,val,0,n-1,1);
+        return pos-cnt-1;
+    }
+};
