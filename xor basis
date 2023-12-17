@@ -1,13 +1,14 @@
+const int bit=31;
 template<class T>
 struct xbasis{
   vector<T>base;
   int n=0;
   int b;
-  xbasis(int bb=31){
+  xbasis(int bb=bit){
     b=bb;
     base.resize(b);
   }
-  xbasis(vector<T>&a,int bb=31){
+  xbasis(vector<T>&a,int bb=bit){
     b=bb;
     base.resize(b);
     for(auto &x:a)insert(x);
