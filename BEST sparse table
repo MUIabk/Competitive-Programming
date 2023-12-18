@@ -1,11 +1,11 @@
 template<typename Node>
-struct SparseTable {
+struct sparse {
 	vector<vector<Node>> table;
 	vector<ll> logValues;
 	int n;
 	int maxLog;
 	vector<ll> a;
-	SparseTable(int n1, vector<ll> &arr) {
+	sparse(int n1, vector<ll> &arr) {
 		n = n1;
 		a = arr;
 		table.resize(n);
