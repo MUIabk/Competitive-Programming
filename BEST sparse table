@@ -41,8 +41,8 @@ struct sparse {
 		}
 		return ans;
 	}
-	Node queryIdempotent(int left, int right) {
-		int j = logValues[right - left + 1];
+	Node queryIdempotent(int left, int right) {        //min, max, gcd, and, or
+		int j = logValues[right - left + 1];	   //xor is not idempotent
 		Node ans = Node();
 		ans.merge(table[left][j], table[right - (1 << j) + 1][j]);
 		return ans;
