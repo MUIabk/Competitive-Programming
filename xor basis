@@ -53,3 +53,4 @@ struct xbasis{
 
 //very good example for binary lifting and xor basis : https://codeforces.com/contest/1902/submission/237669398
 //note vector takes much more space than array so use array whenever possible ... or if you get MLE
+//easier one hhttps://codeforces.com/contest/959/submission/237685571
