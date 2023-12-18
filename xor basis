@@ -50,3 +50,5 @@ struct xbasis{
     }
   }
 };
+
+//very good example for binary lifting and xor basis : https://codeforces.com/contest/1902/submission/237669398
