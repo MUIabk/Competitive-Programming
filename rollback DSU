@@ -1,0 +1,57 @@
+struct Data {
+	int cnt;
+	bool united;
+	int x, y;
+};
+struct ufundo {
+private:
+	vector<int> par, sz;
+	vector<Data> mem;
+	int cnt;
+public:
+	ufundo(int n,int _cnt) {
+		par.resize(n, 0);
+		sz.resize(n, 1);
+		rep(i, n) {
+			par[i] = i;
+		}
+		cnt = _cnt;
+	}
+	
+	int find(int x) {
+		if (par[x] == x)return x;
+		else return find(par[x]);
+	}
+	void unite(int x, int y) {
+		x = find(x), y = find(y);
+		if (x == y) {
+			mem.push_back({ cnt,false,x,y });
+			return;
+		}
+		if (sz[x] > sz[y])swap(x, y);
+		mem.push_back({ cnt,true,x,y });
+		par[x] = y; sz[y] += sz[x];
+		cnt--;
+	}
+	bool same(int x, int y) {
+		return find(x) == find(y);
+	}
+	int getsize(int k) {
+		return sz[find(k)];
+	}
+	int getcnt() {
+		return cnt;
+	}
+	void undo(int num) {
+		rep(_, num) {
+			assert(mem.size());
+			Data d = mem.back(); mem.pop_back();
+			if (!d.united)continue;
+			cnt = d.cnt;
+			int x = d.x;
+			int y = d.y;
+			par[x] = x;
+			sz[y] -= sz[x];
+		}
+	}
+};
