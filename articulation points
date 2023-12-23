@@ -1,0 +1,42 @@
+template <class cost_type>
+struct low_link {
+   protected:
+	const graph<cost_type> &graph_given;
+
+   private:
+	int order_next;
+
+	void dfs(int now, int par = -1) {
+		parent[now] = par;
+		if(par != -1) childs[par].push_back(now);
+		low[now] = order[now] = order_next++;
+		bool is_articulation = false;
+		int cnt = 0, cnt_par = 0;
+		for(const auto &ed : graph_given[now]) {
+			const int &nxt = ed.to;
+			if(order[nxt] == -1) {
+				cnt++;
+				dfs(nxt, now);
+				if(order[now] < low[nxt]) bridge.push_back(std::minmax(now, nxt));
+				if(order[now] <= low[nxt]) is_articulation = true;
+				low[now] = std::min(low[now], low[nxt]);
+			} else if(nxt != par or cnt_par++ == 1) {
+				low[now] = std::min(low[now], order[nxt]);
+			}
+		}
+		if(par == -1 and cnt < 2) is_articulation = false;
+		if(is_articulation) articulation.push_back(now);
+		return;
+	}
+
+   public:
+	vector<vector<int>> childs;
+	std::vector<int> order, low, articulation, parent;
+	std::vector<std::pair<int, int>> bridge;
+	low_link() = default;
+	low_link(const graph<cost_type> &g_)
+		: graph_given(g_), order_next(0), order(g_.size(), -1), low(g_.size()), parent(g_.size()), childs(g_.size()) {
+		for(int i = 0; i < graph_given.size(); i++)
+			if(order[i] == -1) dfs(i);
+	}
+};
