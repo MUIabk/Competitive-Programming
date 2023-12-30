@@ -1,0 +1,26 @@
+struct Mex {
+    map<int, int> freq;
+    set<int> missing;
+    vector<int> arr;
+    Mex() {missing.insert(0);}
+    Mex(int n) : Mex(){
+        range(i,0,n + 1) {
+            missing.insert(i);
+        }
+    }
+    int mex() {
+        return *missing.begin();
+    }
+    void insert(int value) {
+        freq[value]++;
+        arr.push_back(value);
+        missing.erase(value);
+    }
+    void update(int idx, int val) {
+        if (--freq[arr[idx]] == 0)
+            missing.insert(arr[idx]);
+        arr[idx] = val;
+        freq[val]++;
+        missing.erase(val);
+    }
+};
