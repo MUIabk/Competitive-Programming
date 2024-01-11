@@ -1,4 +1,4 @@
-sort(all(q),[&](auto &x,auto &y){
+    sort(all(q),[&](auto &x,auto &y){
       if(x[0]/t!=y[0]/t)return x[0]<y[0];
       return (x[0]/t&1?x[1]<y[1]:x[1]>y[1]);
     });
