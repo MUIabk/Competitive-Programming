@@ -1,0 +1,33 @@
+class SK {
+    map<long, long> f;
+    long sm = 0, count = 0;
+public:
+    void add (long x) {
+        f[x]++;
+        sm += x;
+        count++;
+    }
+    void rm (long x) {
+        auto itr = f.find(x);
+        --(itr->second);
+        if (itr->second == 0)
+            f.erase(itr);
+        sm -= x;
+        count--;
+    }
+    bool has (long x) {
+        return f.find(x) != f.end();
+    }
+    long sum() {
+        return sm;
+    }
+    long min() {
+        return f.begin()->first;
+    }
+    long max() {
+        return (--f.end())->first;
+    }
+    int size() {
+        return count;
+    }
+};
