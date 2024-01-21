@@ -1,13 +1,13 @@
 class SK {
-    map<long, long> f;
-    long sm = 0, count = 0;
+    map<long long, long long> f;
+    long long sm = 0, count = 0;
 public:
-    void add (long x) {
+    void add (long long x) {
         f[x]++;
         sm += x;
         count++;
     }
-    void rm (long x) {
+    void rm (long long x) {
         auto itr = f.find(x);
         --(itr->second);
         if (itr->second == 0)
@@ -15,16 +15,16 @@ public:
         sm -= x;
         count--;
     }
-    bool has (long x) {
+    bool has (long long x) {
         return f.find(x) != f.end();
     }
-    long sum() {
+    long long sum() {
         return sm;
     }
-    long min() {
+    long long min() {
         return f.begin()->first;
     }
-    long max() {
+    long long max() {
         return (--f.end())->first;
     }
     int size() {
