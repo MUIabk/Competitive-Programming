@@ -3,18 +3,18 @@ class Seg{
     int n;
     vector<T> seg;
     T get(T x,T y){
-     return max(x,y);
+     return x+y;
     }
     void _update(int i,int l,int r,int idx,T val){
-        if(l == r) {seg[i] = max(seg[i],val); return;}
+        if(l == r) {seg[i] = val; return;}
         int mid = l+r>>1;
         if(idx<=mid) _update(2*i+1,l,mid,idx,val);
         else _update(2*i+2,mid+1,r,idx,val);
         seg[i] = get(seg[2*i+1],seg[2*i+2]);
     }
     T _query(int i,int l,int r,int ll,int rr){
-        if(l>r) return -1e7;
-        if(r < ll || l > rr) return -1e7;
+        if(l>r) return 0;
+        if(r < ll || l > rr) return 0;
         if(ll<=l && rr>=r) return seg[i];
         int mid = l+r>>1;
         return get(_query(2*i+1,l,mid,ll,rr),_query(2*i+2,mid+1,r,ll,rr));
@@ -22,7 +22,7 @@ class Seg{
     public:
     Seg(int _n){
         n = _n;
-        seg.resize(4*n,-1e7);
+        seg.resize(4*n,0);
     }
     void update(int idx,T val){ _update(0,0,n,idx,val); }
     T query(int l,int r){ return _query(0,0,n,l,r); }
