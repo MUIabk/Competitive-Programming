@@ -1,6 +1,6 @@
     sort(all(q),[&](auto &x,auto &y){
-      if(x[0]/t!=y[0]/t)return x[0]<y[0];
-      return (x[0]/t&1?x[1]<y[1]:x[1]>y[1]);
+      if(x[0]/period!=y[0]/period)return x[0]<y[0];
+      return (x[0]/period&1?x[1]<y[1]:x[1]>y[1]);
     });
     int x=0,y=-1;
     int curr=0;
