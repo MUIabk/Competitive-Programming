@@ -6,6 +6,7 @@ struct SGT {
     vector<ll> arr; // type may change
     int n;
     int s;
+    SGT(){}
     SGT(int nn){
       n=nn;
       int s=1;
