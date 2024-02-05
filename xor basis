@@ -1,16 +1,16 @@
 const int bit=31;
 template<class T>
 struct xbasis{
-  vector<T>base;
+  T base[bit];
   int n=0;
   int b;
   xbasis(int bb=bit){
     b=bb;
-    base.resize(b);
+    FOR(i,0,bit)base[i]=0;
   }
   xbasis(vector<T>&a,int bb=bit){
     b=bb;
-    base.resize(b);
+    FOR(i,0,bit)base[i]=0;
     for(auto &x:a)insert(x);
   }
   T mn(T x){
@@ -27,15 +27,15 @@ struct xbasis{
     return mn(x)==0;
   }
   int size(){return n;}
-  bool insert(T x){
+  void insert(T x){
     x=mn(x);
-    if(!x)return false;
+    if(!x)return;
     base[n++]=x;
     int k=n-1;
     while(k>0 and base[k]>base[k-1]){
       swap(base[k],base[k-1]);
       k--;
-    }return true;
+    }
   }
   void merge(const xbasis<T>&xx){
     for(int i=0;i<xx.n and n<b;i++){
@@ -48,6 +48,10 @@ struct xbasis{
     }else {
       *this=xx;merge(x);
     }
+  }
+  void clear(){
+    for(int i=0;i<n;i++)base[i]=0;
+    n=0;
   }
 };
 
