@@ -33,8 +33,8 @@ struct Node{
     }
     Node(int x){
         sm=x;
-    };
+    }
     void merge(Node l,Node r){
         sm=l.sm+r.sm;
-    }; 
+    }
 };
