@@ -38,8 +38,8 @@ struct xbasis{
     }
   }
   void merge(const xbasis<T>&xx){
-    for(int i=0;i<xx.size() and n<b;i++){
-      insert(xx.basis[i]);
+    for(int i=0;i<xx.n and n<b;i++){
+      insert(xx.base[i]);
     }
   }
   void merge(const xbasis<T>&x,const xbasis<T>&xx){
