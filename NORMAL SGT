@@ -3,8 +3,8 @@ class Seg{
     public:
     int n;
     vector<T> seg;
-    void _update(int i,int l,int r,int idx,T val){
-        if(l == r) {seg[i] = val; return;}
+    void _update(int i,int l,int r,int idx,int val){
+        if(l == r) {seg[i].upd(val); return;}
         int mid = l+r>>1;
         if(idx<=mid) _update(2*i+1,l,mid,idx,val);
         else _update(2*i+2,mid+1,r,idx,val);
@@ -23,7 +23,7 @@ class Seg{
         n = _n;
         seg.resize(4*n,T());
     }
-    void update(int idx,T val){ _update(0,0,n,idx,val); }
+    void update(int idx,int val){ _update(0,0,n,idx,val); }
     T query(int l,int r){ return _query(0,0,n,l,r); }
 };
 struct Node{
@@ -36,5 +36,8 @@ struct Node{
     }
     void merge(Node l,Node r){
         sm=l.sm+r.sm;
+    }
+    void upd(int val){
+        sm+=val;
     }
 };
