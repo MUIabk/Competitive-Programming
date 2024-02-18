@@ -27,17 +27,17 @@ class Seg{
     T query(int l,int r){ return _query(0,0,n,l,r); }
 };
 struct Node{
-    int sm;
+    int val;
     Node(){
-        sm=0;
+        val=0;
     }
     Node(int x){
-        sm=x;
+        val=x;
     }
     void merge(Node l,Node r){
-        sm=l.sm+r.sm;
+        val=max(l.val,r.val);
     }
     void upd(int val){
-        sm+=val;
+        this->val=val;
     }
 };
