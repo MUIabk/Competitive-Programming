@@ -1,0 +1,41 @@
+struct Graph {
+	vector<vector<pair<int, int>>> e;
+	Graph(int n, int m) : e(n) {
+		e.reserve(m);
+	}
+	int newnode() {
+		e.emplace_back();
+		return (int)e.size() - 1;
+	}
+	void addedge(int u, int v, int w) {
+		e[u].emplace_back(v, w);
+	}
+	ll query(int s, int t) {
+		int n = e.size();
+		const ll lnf = 1e18;
+		vector<ll> dis(n, lnf);
+		struct P {
+			int id;
+			ll dis;
+			bool operator<(const P &b) const {
+				return dis > b.dis;
+			}
+		};
+		priority_queue<P> hp;
+		dis[s] = 0, hp.push({s, dis[s]});
+		while (!hp.empty()) {
+			auto [v, d] = hp.top();
+			hp.pop();
+			if (dis[v] != d) {
+				continue;
+			}
+			for (auto [u, w] : e[v]) {
+				if (dis[u] > dis[v] + w) {
+					dis[u] = dis[v] + w;
+					hp.push({u, dis[u]});
+				}
+			}
+		}
+		return dis[t];
+	}
+};
