@@ -1,0 +1,17 @@
+template <typename F>
+ll binary_search(F check, ll ok, ll ng, bool check_ok = true) {
+  if (check_ok) assert(check(ok));
+  while (abs(ok - ng) > 1) {
+    auto x = (ng + ok) / 2;
+    (check(x) ? ok : ng) = x;
+  }
+  return ok;
+}
+template <typename F>
+double binary_search_real(F check, double ok, double ng, int iter = 100) {
+  FOR(_,0,iter) {
+    double x = (ok + ng) / 2;
+    (check(x) ? ok : ng) = x;
+  }
+  return (ok + ng) / 2;
+}
