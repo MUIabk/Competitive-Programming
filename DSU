@@ -13,7 +13,7 @@ struct DSU{
     return p[x]=par;
   }
   ll wunite(ll u,ll v,ll w){ //u->v==w
-    if(check(u,v) and wdiff(u,v)!=w)return -1;
+    if(!check(u,v) and wdiff(u,v)!=w)return -1;
     ll p1=root(u),p2=root(v);
     w-=weight(v)-weight(u);
     if(p1!=p2){
@@ -24,7 +24,7 @@ struct DSU{
     }return p1!=p2;
   }
   bool unite(ll u,ll v){
-    if(check(u,v))return false;
+    if(!check(u,v))return false;
     ll p1=root(u),p2=root(v);
     assert(p1!=p2);
     if(size(p1)<size(p2))swap(p1,p2);
@@ -40,7 +40,7 @@ struct DSU{
     return -p[root(x)];
   }
   bool check(ll u,ll v){
-    return root(u)==root(v);
+    return root(u)!=root(v);
   }
   ll wdiff(ll u,ll v){
     return weight(v)-weight(u);
