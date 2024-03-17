@@ -24,7 +24,7 @@ struct manacher {
         lengths = odd_manacher(extended);
     }
  
-    // whether s[start, end) is a palindrome ONE BASED
+    // whether s[start, end) is a palindrome 
     inline bool is_palindrome(int start, int end) {
         return lengths[start + end] >= end - start;
     }
