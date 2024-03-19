@@ -6,7 +6,7 @@
 ///replace (x_i xor y_i) by (x_i or y_i) and (not x_i or not y_i)
 struct twosat {
 	int n;	/// total size combining +, -. must be even.
-	vector< vector<int> > g, gt;	/// graph, transpose graph
+	vector< set<int> > g, gt;	/// graph, transpose graph
 	vector<bool> vis, res;	/// visited and resulting assignment
 	vector<int> comp;	/// component number
 	stack<int> ts;	/// topsort
@@ -22,15 +22,24 @@ struct twosat {
 
   // zero indexed, be careful
 	// (x_a or (not x_b))-> af=1,bf=0
-	void add(int a, bool af, int b, bool bf) {
+	void add_bi(int a, bool af, int b, bool bf) {
 		a += a+(af^1);
 		b += b+(bf^1);
-		g[a^1].push_back(b);	                   // !a => b
-		g[b^1].push_back(a);	                   // !b => a
-		gt[b].push_back(a^1);
-		gt[a].push_back(b^1);
+		g[a^1].insert(b);	                   // !a => b
+		g[b^1].insert(a);	                   // !b => a
+		gt[b].insert(a^1);
+		gt[a].insert(b^1);
 	}
- 
+  void add_uni(int a, bool af, int b, bool bf){
+    a += a+(af^1);
+		b += b+(bf^1);
+    g[a^1].insert(b);
+    gt[b].insert(a^1);
+  }
+  void addEdge(int u,int v){
+    g[u].insert(v);
+    gt[v].insert(u);
+  }
 	void dfs1(int u) {                         //topo 
 		vis[u] = true;
 		for(int v : g[u]) if(!vis[v]) dfs1(v);
