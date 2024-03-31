@@ -1,0 +1,63 @@
+struct Block{
+    ll n;
+    ll offset;
+    vector<ll>arr;
+    vector<pii>to_increase;
+    static constexpr ll range = 50;
+    Block(vector<ll>&arr_, int off){
+        arr = arr_;
+        n = arr.size();
+        offset = off;
+        if(n >= range)
+            recalc();
+    }
+    ll sqrt_ll(ll x){
+        ll t = sqrtl(x);
+        while(t*t > x && t >= 1 ) t--;
+        while((t+1)*(t+1) < x) t++;
+        return t;
+    }
+    ll answer_for(ll x){
+        for(auto t:arr)
+            x = sqrt_ll(x + t);
+        return x;
+    }
+    ll input_for(ll x){
+        ll ret = x;
+        for(int i=n-1;i>=0;i--){
+            ret = ret*ret - arr[i];
+            if(i!=0 && ret > 1000000002){
+                return 2e18;
+            };
+        }
+        return ret;
+    }
+    void recalc(){
+        if(n>=range){
+            to_increase.clear();
+            to_increase.push_back({0,answer_for(0)});
+            ll last = 0;
+            while(last <= 1e18 + 1e16){
+                ll req = to_increase.back().S + 1;
+                last = input_for(req);
+                to_increase.push_back({last,req});
+            }
+        }
+    }
+    ll get_answer(ll x){
+        if(n < range) return answer_for(x);
+        ll last = 0;
+        for(auto i:to_increase){
+            if(i.F <= x) last = i.S;
+            else break;
+        }
+        return last;
+    }
+    void update(ll i,ll x){
+        i -= offset;
+        if(i < n && i>=0){
+            arr[i] = x;
+            recalc(); 
+        }
+    }
+};
