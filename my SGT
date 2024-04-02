@@ -1,0 +1,122 @@
+struct node{
+    int l,r,mn,mx,len;
+    Mint ar;
+    node(){
+        l=0,r=0,mn=0,mx=0,len=0;
+        ar=0;
+    }
+    node(int x){
+        l=x,r=x,mn=x,mx=x,len=1;
+        ar=0;
+    }
+    void merge(node &left,node &right){
+        if(!left.len){
+            *this=right;return;
+        }
+        if(!right.len){
+            *this=left;return;
+        }
+        len=left.len+right.len;
+        mn=min(left.mn,right.mn);
+        mx=max(left.mx,right.mx);
+        l=left.l,r=right.r;
+        int L=left.r,R=right.l;
+        int h=abs(R-L);
+        ar=mint(h)/2+min(L,R)-mn;
+        ar+=left.ar;
+        ar+=right.ar;
+        int d=abs(left.mn-right.mn);
+        if(left.mn>right.mn)ar+=d*(left.len-1);
+        else ar+=d*(right.len-1);
+    }
+};
+ 
+struct upd{
+    int t,shift;
+    bool ok;
+    upd(){
+        t=0;shift=0;ok=0;
+    }
+    upd(int x){
+        t=1;shift=2*x;ok=1;
+    }
+    void apply(node &x,int l,int r){
+        if(t){
+            x.ar=mint(x.mx-x.mn)*mint(x.len-1)-x.ar;
+            x.mn=-x.mn;
+            x.l=-x.l;
+            x.r=-x.r;
+            x.mx=-x.mx;
+            swap(x.mx,x.mn);
+        }
+        x.mn+=shift;
+        x.mx+=shift;
+        x.l+=shift;
+        x.r+=shift;
+    }
+    void merge(upd &x,int l,int r){
+        if(!ok){
+            *this=x;
+            return;
+        }
+        if(!x.ok)return;
+        t^=x.t;
+        if(x.t)shift=-shift;
+        shift+=x.shift; 
+    }
+};
+ 
+int n,q,a[N];
+node t[N<<2];
+upd lazy[N<<2];
+ 
+void push(int i,int l,int r) {
+    if (lazy[i].ok) {
+        int m=l+r>>1;
+        lazy[i].apply(t[i],l,r);
+        if(l!=r){
+            lazy[i<<1].merge(lazy[i],l,m);
+            lazy[i<<1|1].merge(lazy[i],m+1,r);
+        }
+        lazy[i] = upd();
+    }
+}
+ 
+void build(int i,int x,int y){
+    if(x>y)return;
+    if (x == y) {
+        t[i]=node(a[x]);
+        return;
+    }
+    int m = x+y>>1;
+    build(i<<1, x, m);
+    build(i<<1|1, m+1, y);
+    t[i].merge(t[i<<1],t[i<<1|1]);
+}
+ 
+void update(int i, int x, int y, int l, int r, int val) {
+    push(i,x,y);
+    if(x>r or y<l)return;
+    if (l <= x && y <= r) {
+        upd nval=upd(val);
+        lazy[i].merge(nval,x,y);
+        push(i,x,y);
+        return;
+    }
+    int m = x+y>>1;
+    update(i<<1, x, m, l, r, val);
+    update(i<<1|1, m+1, y, l, r, val);
+    t[i].merge(t[i<<1],t[i<<1|1]);
+}
+ 
+node get(int i, int x, int y, int l,int r) {
+    push(i,x,y);
+    if(x>r or y<l)return node();
+    if(l<=x and y<=r)return t[i];
+    int m = x+y>>1;
+    node left,right,ans;
+    left=get(i<<1,x,m,l,r);
+    right=get(i<<1|1,m+1,y,l,r);
+    ans.merge(left,right);
+    return ans;
+}
