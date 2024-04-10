@@ -1,0 +1,108 @@
+int64_t peanoOrder(unsigned x, unsigned y, unsigned z, int m) {
+    static int a[3][13];
+    memset(a, 0, sizeof(a));
+    int sum0 = 0, sum1 = 0, sum2 = 0;
+    int ptr = m - 1;
+    while (x) {
+        a[0][ptr] = x % 3;
+        sum0 += a[0][ptr];
+        ptr--;
+        x /= 3;
+    }
+    ptr = m - 1;
+    while (y) {
+        a[1][ptr] = y % 3;
+        sum1 += a[1][ptr];
+        ptr--;
+        y /= 3;
+    }
+    ptr = m - 1;
+    while (z) {
+        a[2][ptr] = z % 3;
+        sum2 += a[2][ptr];
+        ptr--;
+        z /= 3;
+    }
+ 
+    for (int i = m - 1; i >= 0; i--) {
+        sum2 -= a[2][i];
+        if ((sum0 + sum1) & 1) a[2][i] = 2 - a[2][i];
+ 
+        sum1 -= a[1][i];
+        if ((sum0 + sum2) & 1) a[1][i] = 2 - a[1][i];
+ 
+        sum0 -= a[0][i];
+        if ((sum1 + sum2) & 1) a[0][i] = 2 - a[0][i];
+    }
+ 
+    int64_t num = 0, base = 1;
+    for (int j = m - 1; j >= 0; j--) {
+        num += base * a[2][j];
+        base *= 3;
+        num += base * a[1][j];
+        base *= 3;
+        num += base * a[0][j];
+        base *= 3;
+    }
+    return num;
+}
+ 
+struct range_query {
+    int L, R, time, idx;
+    int64_t ord;
+ 
+    range_query() {}
+ 
+    range_query(int L_, int R_, int time_, int idx_) {
+        L = L_, R = R_;
+        time = time_, idx = idx_;
+        ord = peanoOrder(L, R, time, 13);
+    }
+};
+ 
+struct update_query {
+    int idx, old_val, new_val;
+ 
+    update_query() {}
+ 
+    update_query(int idx_, int old_val_, int new_val_) {
+        idx = idx_, old_val = old_val_, new_val = new_val_;
+    }
+};
+ 
+int const siz = 2e5 + 10;
+int arr[siz], freq[siz], ffreq[siz], block_size, ans[siz];
+range_query Q[siz];
+update_query UPD[siz];
+ 
+void add(int x) {
+    ffreq[freq[x]]--;
+    freq[x]++;
+    ffreq[freq[x]]++;
+}
+ 
+void remove(int x) {
+    ffreq[freq[x]]--;
+    freq[x]--;
+    ffreq[freq[x]]++;
+}
+ 
+void to_future(int timer, int L, int R) {
+    if (L <= UPD[timer].idx && UPD[timer].idx <= R) {
+        remove(UPD[timer].old_val);
+        add(UPD[timer].new_val);
+    }
+    arr[UPD[timer].idx] = UPD[timer].new_val;
+}
+ 
+void to_past(int timer, int L, int R) {
+    if (L <= UPD[timer].idx && UPD[timer].idx <= R) {
+        remove(UPD[timer].new_val);
+        add(UPD[timer].old_val);
+    }
+    arr[UPD[timer].idx] = UPD[timer].old_val;
+}
+ 
+inline bool operator<(const range_query& a, const range_query& b) {
+    return a.ord < b.ord;
+}
