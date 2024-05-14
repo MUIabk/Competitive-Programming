@@ -1,3 +1,4 @@
+//returns max
 struct Line {
 	mutable ll k, m, p;
 	bool operator<(const Line& o) const { return k < o.k; }
@@ -23,7 +24,7 @@ struct LineContainer : multiset<Line, less<>> {
 			isect(x, erase(y));
 	}
 	ll query(ll x) {
-		assert(!empty());
+		if(empty())return 0ll;
 		auto l = *lower_bound(x);
 		return l.k * x + l.m;
 	}
