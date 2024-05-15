@@ -5,6 +5,7 @@ class BIT {
     int n;
  
     BIT(int n) {
+        n += 5;
         this->n = n;
         bit.assign(n, T());
     }
@@ -22,12 +23,16 @@ class BIT {
     }
  
     T sum(int l, int r) {
-        r = min(r, n - 1);
         return sum(r) - sum(l - 1);
     }
  
-    void add(int idx, int delta) {
-        for (; idx < n; idx = idx | (idx + 1))
+    void add(int idx, T delta) {
+        for (; idx < n; idx = (idx | (idx + 1)))
             bit[idx] += delta;
+    }
+
+    void add(int l,int r,T delta){
+        add(l ,delta);
+        add(r+1 ,-delta);
     }
 };
