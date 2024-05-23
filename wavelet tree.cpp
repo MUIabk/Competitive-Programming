@@ -15,9 +15,11 @@ struct wavelet{
     vector<int> a;
 
     //its 0-based
-    //remember the sz can reach n * log (mxe(a))
-    //to reduce perform coordinate compression 
-    //creator : NegativeElo
+    //space upper bound : n * log (mxe(a))
+    //query : log(mxe(a))
+    //build : n * log (mxe(a))
+    //to reduce log(mxe(a)) to log(n) perform coordinate compression 
+    //creator : Aayan
 
     wavelet(vector<int>&a){
         n = sz(a);
