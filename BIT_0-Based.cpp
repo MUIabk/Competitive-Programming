@@ -32,7 +32,7 @@ class BIT {
     }
 
     void add(int l,int r,T delta){
-        add(l ,delta);
-        add(r+1 ,-delta);
+        add(l, delta);
+        add(r + 1, -delta);
     }
 };
