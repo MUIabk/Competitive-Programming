@@ -19,6 +19,7 @@ struct wavelet{
     //query : log(mxe(a))
     //build : n * log (mxe(a))
     //to reduce log(mxe(a)) to log(n) perform coordinate compression 
+    //for updates use Seg Tree or BIT for the p array 
     //creator : Aayan
 
     wavelet(vector<int>&a){
