@@ -188,46 +188,51 @@ template<ll mod = MOD> struct Inverses {
     }
 };
 using Mint = mint<>;
-typedef array<Mint, 10> Hash;
+const int K = 2;
+typedef array<Mint, K> Hash;
  
 Hash operator*(const Hash& u, const Hash& v) {
   Hash t;
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < K; i++)
     t[i] = u[i] * v[i] ;
   return t;
 }
  
+Hash operator*(const Hash& u, const int& v) {
+  Hash t;
+  for (int i = 0; i < K; i++)
+    t[i] = u[i] * v ;
+  return t;
+}
 Hash operator+(const Hash& u, const Hash& v) {
   Hash t;
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < K; i++)
     t[i] = (u[i] + v[i]) ;
   return t;
 }
  
 Hash operator-(const Hash& u, const Hash& v) {
   Hash t;
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < K; i++)
     t[i] = (u[i] - v[i]);
   return t;
 }
  
 Hash Base;
- 
-Hash mult_base(const Hash& u) {
-  Hash t;
-  for (int i = 0; i < 10; i++)
-    t[i] = u[i] * Base[i];
-  return t;
+
+void mult_base(Hash& u) {
+  for (int i = 0; i < K; i++)
+    u[i] = u[i] * Base[i];
 }
  
-Hash add_one(const Hash& u) {
-  Hash t;
-  for (int i = 0; i < 10; i++)
-    t[i] = (u[i] + 1);
-  return t;
+void add_one(Hash& u) {
+  for (int i = 0; i < K; i++)
+    u[i] = (u[i] + 1);
 }
-int gen_base() {
-  static uniform_int_distribution<int> d(258, P - 1);
-  int b = d(rng);
-  return b % 2 == 0 ? b - 1 : b;
+void gen_base() {
+  for(int i = 0;i < K; i++){
+    static uniform_int_distribution<int> d(258, MOD - 1);
+    int b = d(rng);
+    Base[i] = b % 2 == 0 ? b - 1 : b;
+  }
 }
