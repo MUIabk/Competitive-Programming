@@ -8,7 +8,7 @@ struct wavelet{
             this->rc = rc;
         }
     };
-    int mn = inf, mx = 0;
+    int mn = 1e9, mx = 0;
     int n;
     vector<int> p;
     vector<Info> wt;
