@@ -11,32 +11,38 @@ struct Trie{
     };
     vector<Node>nodes;
     Node def;
-    int k;
+    int k,sz;
     Trie(int K = 0){
         k = K;
+        sz = 0;
         nodes.push_back(def);
     }
 
     void add(string s , int id){
+        sz++;
         int curr = 0;
         for(auto ch: s){
             if(nodes[curr].next[ch-'0'] == -1){
                 nodes[curr].next[ch-'0'] = nodes.size();
                 nodes.push_back(def);
             }
-            nodes[curr].cnt[ch-'0']+=T(1);
+            nodes[curr].cnt[ch-'0']++;
             curr = nodes[curr].next[ch-'0'];
         }
         nodes[curr].idx = id;
-        nodes[curr].end_cnt+=T(1);
+        nodes[curr].end_cnt++;
     }
     void del(string s){
+        sz--;
         int curr = 0;
         for(auto ch: s){
-            nodes[curr].cnt[ch-'0']-=T(1);
+            nodes[curr].cnt[ch-'0']--;
             curr = nodes[curr].next[ch-'0'];
         }
-        nodes[curr].end_cnt-=T(1);
+        nodes[curr].end_cnt--;
+    }
+    bool empty(){
+        return sz==0;
     }
     bool search(string word){
         int curr = 0;
@@ -72,7 +78,7 @@ struct Trie{
     T max_xor(string s){
         T curr = 0 , ans = 0 , len = k-1;
         for(auto ch: s){
-            if(nodes[curr].next[(ch-'0')^1] == -1 || nodes[curr].cnt[(ch-'0')^1] <= T(0)){
+            if(nodes[curr].next[(ch-'0')^1] == -1 || nodes[curr].cnt[(ch-'0')^1] <= 0){
                 curr = nodes[curr].next[ch-'0'];
             }else{
                 curr = nodes[curr].next[(ch-'0')^1];
@@ -85,7 +91,7 @@ struct Trie{
     T min_xor(string s){
         T curr=0,ans=0,len=k-1;
         for(auto ch:s){
-            if(nodes[curr].next[ch-'0']==-1 || nodes[curr].cnt[ch-'0']<=T(0)){
+            if(nodes[curr].next[ch-'0']==-1 || nodes[curr].cnt[ch-'0'] <= 0){
                 curr=nodes[curr].next[(ch-'0')^1];
                 ans^=(1<<len);
             }else{
