@@ -6,12 +6,12 @@ struct StringHash {
     int n;
     array<ll, K> base;
     array<ll, K> M;
-    vector<array<ll, K>> fw;
+    vector<array<ll, K>> ps;
     vector<array<ll, K>> powf;
     
     StringHash(string s) {
         n = s.length();
-        fw.resize(n + 1);
+        ps.resize(n + 1);
         powf.resize(n + 1);
         powf[0].fill(1);
 
@@ -19,9 +19,9 @@ struct StringHash {
         build(s);
     }
     
-    StringHash(string s, const StringHash<K>& p){ // for hashes requiring same bases for comparision
+    StringHash(string s, const StringHash<K>& p){
         n = s.length();
-        fw.resize(n + 1);
+        ps.resize(n + 1);
         powf.resize(n + 1);
         powf[0].fill(1);
 
@@ -31,9 +31,10 @@ struct StringHash {
     }
 
     void build(string s){
+
         for (int i = 1; i <= n; i++) {
             for (int j = 0; j < K; j++) {
-                fw[i][j] = (base[j] * fw[i - 1][j] + s[i - 1] + 1) % M[j];
+                ps[i][j] = (base[j] * ps[i - 1][j] + s[i - 1] + 1) % M[j];
                 powf[i][j] = (powf[i - 1][j] * base[j]) % M[j];
             }
         }
@@ -48,28 +49,28 @@ struct StringHash {
 
     inline array<ll, K> getHash(string s) {
         int n = s.length();
-        array<ll, K> fw;
-
+        array<ll, K> ps;
+ 
         for (int i = 1; i <= n; i++) {
             for (int j = 0; j < K; j++) {
-                fw[j] = (base[j] * fw[j] + s[i - 1] + 1) % M[j];
+                ps[j] = (base[j] * ps[j] + s[i - 1] + 1) % M[j];
             }
         }
-
-        return fw;
+ 
+        return ps;
     }
-
+ 
     inline array<ll, K> substrHash(int start, int end)  {
         array<ll, K> res;
         for (int j = 0; j < K; j++) {
-            ll rem = (powf[end - start + 1][j] * fw[start][j]) % M[j];
-            res[j] = (fw[end + 1][j] - rem + M[j]) % M[j];
+            ll rem = (powf[end - start + 1][j] * ps[start][j]) % M[j];
+            res[j] = (ps[end + 1][j] - rem + M[j]) % M[j];
         }
         return res;
     }
-
+ 
     inline bool operator==(StringHash<K> &other) {
-        return (fw.back() == other.fw.back());
+        return (ps.back() == other.ps.back());
     }
 
     inline bool isPali(int l,int r,StringHash<K> &bc){
