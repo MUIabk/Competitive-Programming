@@ -1,5 +1,5 @@
 template<int K = 2>
-struct StringHash {
+struct StringHash {   //0 based
     using ll = long long;
     static inline array<ll, 3> mods = {1000000007, 998244353, 1000000009};
     
