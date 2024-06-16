@@ -31,7 +31,6 @@ struct StringHash {   //0 based
     }
 
     void build(string s){
-
         for (int i = 1; i <= n; i++) {
             for (int j = 0; j < K; j++) {
                 ps[i][j] = (base[j] * ps[i - 1][j] + s[i - 1] + 1) % M[j];
@@ -43,7 +42,7 @@ struct StringHash {   //0 based
     inline void getRand(){
         for (int i = 0; i < K; i++) {
             M[i] = mods[rng() % 3];
-            base[i] = rng() % (M[i] / 10);
+            base[i] = uid(270, M[i] / 10);
         }
     }
 
