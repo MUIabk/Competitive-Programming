@@ -1,51 +1,52 @@
 struct DSU{
-  ll n;
-  vl p,wt;
-  DSU(ll nn){
+  #define int long long
+  int n,comps;
+  vector<int> p,wt;
+  DSU(int nn){
     n=nn;
-    p.assign(n+1,-1);
-    wt.resize(n+1,0);
+    comps=nn;
+    p.assign(n,-1);
+    wt.resize(n,0);
   }
-  ll root(ll x){
+  int root(int x){
     if(p[x]<0)return x;
-    ll par=root(p[x]);
+    int par=root(p[x]);
     wt[x]+=wt[p[x]];
     return p[x]=par;
   }
-  ll wunite(ll u,ll v,ll w){ //u->v==w
-    if(!check(u,v) and wdiff(u,v)!=w)return -1;
-    ll p1=root(u),p2=root(v);
+  int wunite(int u,int v,int w){ //u->v==w
+    if(check(u,v) and wdiff(u,v)!=w)return -1;
+    int p1=root(u),p2=root(v);
     w-=weight(v)-weight(u);
     if(p1!=p2){
       if(size(p1)<size(p2))swap(p1,p2),w=-w;
       p[p1]+=p[p2];
       p[p2]=p1;
       wt[p2]=w;
+      comps--;
     }return p1!=p2;
   }
-  bool unite(ll u,ll v){
-    if(!check(u,v))return false;
-    ll p1=root(u),p2=root(v);
+  bool unite(int u,int v){
+    if(check(u,v))return false;
+    int p1=root(u),p2=root(v);
     assert(p1!=p2);
     if(size(p1)<size(p2))swap(p1,p2);
     p[p1]+=p[p2];
     p[p2]=p1;
+    comps--;
     return true;
   }
-  ll weight(ll x){
+  int weight(int x){
     root(x);
     return wt[x];
   }
-  ll size(ll x){
+  int size(int x){
     return -p[root(x)];
   }
-  bool check(ll u,ll v){
-    return root(u)!=root(v);
+  bool check(int u,int v){
+    return root(u)==root(v);
   }
-  ll wdiff(ll u,ll v){
+  int wdiff(int u,int v){
     return weight(v)-weight(u);
-  }
-  void debug(){
-    for(ll i=0;i<n;i++)dbg(i,p[i],wt[i]);
   }
 };
