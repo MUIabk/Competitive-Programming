@@ -37,7 +37,7 @@ struct wavelet{
         int m = hi + lo >> 1;
         auto f = [&](int x){ return x <= m; };
         p.pb(0);
-        int i=sz(wt);
+        int i = sz(wt);
         wt.push_back(Info());
         wt[i].st = sz(p);
         for(auto it = from; it != to; ++it) {
