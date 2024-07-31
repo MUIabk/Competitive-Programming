@@ -8,20 +8,19 @@ struct wavelet{
             this->rc = rc;
         }
     };
-    int mn = 1e9, mx = 0;
+    int mn = inf, mx = 0;
     int n;
     vector<int> p;
     vector<Info> wt;
     vector<int> a;
-
+ 
     //its 0-based
     //space upper bound : n * log (mxe(a))
     //query : log(mxe(a))
     //build : n * log (mxe(a))
     //to reduce log(mxe(a)) to log(n) perform coordinate compression 
-    //for updates use Seg Tree or BIT for the p array 
     //creator : Aayan
-
+ 
     wavelet(vector<int>&a){
         n = sz(a);
         for(auto &x : a){
@@ -31,7 +30,7 @@ struct wavelet{
         this->a = a;
         build(this->a.begin(), this->a.end(), mn, mx);
     }
-
+ 
     template<typename IT>
     void build(IT from, IT to, int lo, int hi){
         int m = hi + lo >> 1;
@@ -50,7 +49,7 @@ struct wavelet{
         wt[i].rc = sz(wt);
         build(it, to, m + 1, hi);
     }
-
+ 
     int equals(int i, int l, int r, int val, int lo, int hi){
         if(l > r)return 0;
         if(lo == hi){
@@ -61,14 +60,14 @@ struct wavelet{
         if(val <= m)return equals(wt[i].lc, p[wt[i].st + l - 1], p[wt[i].st + r] - 1, val, lo, m); 
         return equals(wt[i].rc, l - p[wt[i].st + l - 1], r - p[wt[i].st + r] , val, m + 1, hi);
     }
-
+ 
     int less_equals(int i, int l, int r, int val, int lo, int hi){
         if(l > r or lo > val)return 0;
         if(hi <= val)return r - l + 1;
         int m = hi + lo >> 1;
         return less_equals(wt[i].lc, p[wt[i].st + l - 1], p[wt[i].st + r] - 1, val, lo, m) + less_equals(wt[i].rc, l - p[wt[i].st + l - 1], r - p[wt[i].st + r] , val, m + 1, hi);
     }
-
+ 
     // 1 - based
     int kth(int i, int l, int r, int val, int lo, int hi){
         if(lo == hi)return lo;
