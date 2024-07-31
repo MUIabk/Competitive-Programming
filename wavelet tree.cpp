@@ -20,7 +20,8 @@ struct wavelet{
     //build : n * log (mxe(a))
     //to reduce log(mxe(a)) to log(n) perform coordinate compression 
     //creator : Aayan
- 
+    //Eg: https://codeforces.com/contest/840/submission/262310479
+
     wavelet(vector<int>&a){
         n = sz(a);
         for(auto &x : a){
