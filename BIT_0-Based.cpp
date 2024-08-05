@@ -35,4 +35,14 @@ class BIT {
         add(l, delta);
         add(r + 1, -delta);
     }
+
+    int lower_bound(T t) {
+        if(t <= 0) return -1;
+        int pos = 0;
+        for (int pw = 1ll << 25; pw; pw >>= 1) {
+            if(pos + pw - 1 < n and bit[pos + pw - 1] < t)
+                pos += pw, t -= bit[pos - 1];
+        }
+        return pos;
+    }
 };
