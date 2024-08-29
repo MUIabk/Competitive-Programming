@@ -4,7 +4,7 @@ struct adder{
 	vector<T> data;
 	adder(int n): n(n), data(n + 2){}
 	void update(int l, int r, T start, T step){
-        r ++;
+                r ++;
 		if(l < 0 or l > r or l > n) return;
 		data[l] += start;
 		data[l + 1] -= start - step;
