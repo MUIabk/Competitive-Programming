@@ -5,7 +5,7 @@ struct adder{
 	adder(int n): n(n), data(n + 2){}
 	void update(int l, int r, T start, T step){
                 r ++;
-		if(l < 0 or l > r or l > n) return;
+		if(l < 0 or l > r or r > n) return;
 		data[l] += start;
 		data[l + 1] -= start - step;
 		data[r] -= start + (r - l) * step;
