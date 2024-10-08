@@ -10,12 +10,25 @@ struct TwoSat {
 		gr.emplace_back();
 		return N++;
 	}
-
-	void either(int f, int j) {
+  void addEdge(int f, int j) {
 		f = max(2*f, -1-2*f);
 		j = max(2*j, -1-2*j);
-		gr[f].push_back(j^1);
-		gr[j].push_back(f^1);
+    gr[f].push_back(j);
+  }
+  void imply(int f, int j) {
+    either(~f, j);
+  }
+  void xor1(int a, int b){  
+    either(a, b);
+    either(~a, ~b);
+  }
+  void xor0(int a, int b){  
+    either(a, ~b);
+    either(~a, b);
+  }
+	void either(int f, int j) {
+    addEdge(f, ~j);
+    addEdge(j, ~f);
 	}
 	void setValue(int x) { either(x, x); }
 
