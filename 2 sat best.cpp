@@ -36,11 +36,11 @@ struct TwoSat {
 		if (sz(li) <= 1) return;
 		int cur = ~li[0];
 		FOR(i,2,sz(li)) {
-		int next = addVar();
-		either(cur, ~li[i]);
-		either(cur, next);
-		either(~li[i], next);
-		cur = ~next;
+			int next = addVar();
+			either(cur, ~li[i]);
+			either(cur, next);
+			either(~li[i], next);
+			cur = ~next;
 		}
 		either(cur, ~li[1]);
 	}
@@ -49,12 +49,12 @@ struct TwoSat {
 	int dfs(int i) {
 		int low = val[i] = ++time, x; z.push_back(i);
 		for(int e : gr[i]) if (!comp[e])
-		low = min(low, val[e] ?: dfs(e));
+			low = min(low, val[e] ?: dfs(e));
 		if (low == val[i]) do {
-		x = z.back(); z.pop_back();
-		comp[x] = low;
-		if (values[x>>1] == -1)
-		values[x>>1] = x&1;
+			x = z.back(); z.pop_back();
+			comp[x] = low;
+			if (values[x>>1] == -1)
+				values[x>>1] = x&1;
 		} while (x != i);
 		return val[i] = low;
 	}
