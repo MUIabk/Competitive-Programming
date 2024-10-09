@@ -1,26 +1,135 @@
-template<class T, int N> struct Matrix {
-	typedef Matrix M;
-	array<array<T, N>, N> d{};
-	M operator*(const M& m) const {
-		M a;
-		FOR(i,0,N) FOR(j,0,N)
-			FOR(k,0,N) a.d[i][j] += d[i][k]*m.d[k][j],a.d[i][j]%=mod1;
-		return a;
-	}
-	vector<T> operator*(const vector<T>& vec) const {
-		vector<T> ret(N);
-		FOR(i,0,N) FOR(j,0,N) ret[i] += d[i][j] * vec[j],ret[i]%=mod1;
-		return ret;
-	}
-	M operator^(ll p) const {
+template<class T> 
+struct Mat {
+    //x * mat -> [from][to]
+    //mat * x -> [to][from]
+    int n, m;
+    vector<vector<T>> a;
+    vector<Mat> mat;   
+    Mat() : Mat(0){}
+    Mat(int _n, int _m) : n(_n), m(_m), a(_n, vector<T>(_m, T(0))){}
+    Mat(int _n) : n(_n), m(_n), a(_n, vector<T>(_n, T(0))){}
+    Mat(vector<vector<T>> x) : n(x.size()), m(x[0].size()), a(x){}
+
+    inline const vector<T> &operator[](int k) const {
+        return a[k];
+    }
+
+    inline vector<T> &operator[](int k) {
+        return a[k];
+    }
+
+    Mat &operator+=(const Mat &b) {
+        assert(n == b.n && m == b.m);
+        for(int i = 0; i < n; i++)
+            for(int j = 0; j < m; j++)
+                (*this)[i][j] += b[i][j];
+        return (*this);
+    }
+
+    Mat &operator-=(const Mat &b) {
+        assert(n == b.n && m == b.m);
+        for(int i = 0; i < n; i++)
+            for(int j = 0; j < m; j++)
+                (*this)[i][j] -= b[i][j];
+        return (*this);
+    }
+
+    Mat &operator*=(const Mat &b) {
+        assert(m == b.n);
+        int f = m;
+        m = b.m;
+        vector<vector<T>> ret(n, vector<T>(m, 0));
+        for(int i = 0; i < n; i++)
+            for(int j = 0; j < m; j++)
+                for(int k = 0; k < f; k++)
+                    ret[i][j] = (ret[i][j] + (*this)[i][k] * b[k][j]);
+        a.swap(ret);
+        return (*this);
+    }
+
+    Mat operator^(long long p) const {
 		assert(p >= 0);
-		M a, b(*this);
-		FOR(i,0,N) a.d[i][i] = 1;
+		Mat a(this -> n), b(*this);
+		a.id();
 		while (p) {
-			if (p&1) a = a*b;
-			b = b*b;
+			if (p & 1) a = a * b;
+			b = b * b;
 			p >>= 1;
 		}
 		return a;
-	}
+    }
+
+    Mat operator+(const Mat &b) const {
+        return (Mat(*this) += b);
+    }
+
+    Mat operator-(const Mat &b) const {
+        return (Mat(*this) -= b);
+    }
+
+    Mat operator*(const Mat &b) const {
+        return (Mat(*this) *= b);
+    }
+
+    T determinant() {
+        Mat b(*this);
+        assert(n == m);
+        T ret = 1;
+        for(int i = 0; i < m; i++) {
+            int idx = -1;
+            for(int j = i; j < m; j++) {
+                if(b[j][i] != 0)
+                    idx = j;
+            }
+            if(idx == -1)
+                return T(0);
+            if(i != idx) {
+                ret *= -1;
+                swap(b[i], b[idx]);
+            }
+            T vv = b[i][i];
+            ret *= vv;
+            for(int j = 0; j < m; j++) {
+                b[i][j] /= vv;
+            }
+            for(int j = i + 1; j < m; j++) {
+                T a = b[j][i];
+                for(int k = 0; k < m; k++) {
+                    b[j][k] -= b[i][k] * a;
+                }
+            }
+        }
+        return ret;
+    }
+
+    void id() {
+        for(int i = 0; i < n; i ++) {
+            a[i][i] = T(1);
+        }
+    }
+    
+    void lift(int MX) {
+        int LG = log2(MX);
+        mat.resize(LG + 1);
+        mat[0] = (*this);
+        for(int i = 1; i <= LG; i ++) mat[i] = mat[i - 1] * mat[i - 1];     
+    }
+    
+    Mat<T> walk(Mat &x, int d) {
+        Mat cur = x;
+        int LG = log2(d);
+        for(int i = LG; i >= 0; i --) {
+            if(d >> i & 1) cur *= mat[i];
+        } return cur;
+    }
+
+    void print() {
+        cout << "\n";
+        for(int i = 0; i < n; i ++) {
+            cout << "{ ";
+            for(int j = 0; j < m; j ++) {
+                cout << a[i][j].x << (j < m - 1? ", ": "}\n");
+            }
+        }
+    }
 };
