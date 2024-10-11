@@ -32,6 +32,7 @@ struct sparse {
 		}
 	}
 	Node queryNormal(int left, int right) {
+        	if(right < left) return Node();
 		Node ans = Node();
 		for (int j = logValues[right - left + 1]; j >= 0; j--) {
 			if ((1 << j) <= right - left + 1) {
@@ -42,6 +43,7 @@ struct sparse {
 		return ans;
 	}
 	Node queryIdempotent(int left, int right) {        //min, max, gcd, and, or
+        	if(right < left) return Node();
 		int j = logValues[right - left + 1];	   //xor is not idempotent
 		Node ans = Node();
 		ans.merge(table[left][j], table[right - (1 << j) + 1][j]);
