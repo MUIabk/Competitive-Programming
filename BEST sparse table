@@ -1,11 +1,11 @@
 template<typename Node>
 struct sparse {
 	vector<vector<Node>> table;
-	vector<ll> logValues;
+	vector<int> logValues;
 	int n;
 	int maxLog;
-	vector<ll> a;
-	sparse(int n1, vector<ll> &arr) {
+	vector<int> a;
+	sparse(int n1, vector<int> &arr) {
 		n = n1;
 		a = arr;
 		table.resize(n);
@@ -51,7 +51,7 @@ struct sparse {
 	}
 };
 struct Node1 {
-	ll val; // store more info if required
+	int val; // store more info if required
 	Node1() { // Identity Element
 		val = 0;
 	}
