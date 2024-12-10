@@ -1,7 +1,7 @@
 template <class T>
 struct Line {
     T m, c;
-    Line(): m(0), c(- numeric_limits<T>::max() / 2) {}
+    Line(): Line(0, - numeric_limits<T>::max() / 2) {}
     Line(T _m, T _c): m(_m), c(_c) {}
     T operator() (T x) {
         return m * x + c;
