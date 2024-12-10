@@ -20,3 +20,4 @@ struct SuffixArray {
 					s[i + k] == s[j + k]; k++);
 	}
 };
+//https://codeforces.com/edu/course/2/lesson/2/4/practice/contest/269119/submission/295867799
