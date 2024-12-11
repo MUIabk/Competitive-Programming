@@ -1,4 +1,4 @@
-template <class T>
+template <class T = string>
 struct SuffixArray {
 	vector<int> sa, lcp;
 	SuffixArray (T& s, int lim = 256) {
