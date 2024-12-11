@@ -1,6 +1,7 @@
+template <class T>
 struct SuffixArray {
 	vector<int> sa, lcp;
-	SuffixArray (string& s, int lim = 256) { 
+	SuffixArray (T& s, int lim = 256) {
 		int n = s.size() + 1, k = 0, a, b;
 		vector<int> x(s.begin(), s.end()), y(n), ws(max(n, lim));
 		x.push_back(0), sa = lcp = y, iota(sa.begin(), sa.end(), 0);
