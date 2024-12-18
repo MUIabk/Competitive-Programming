@@ -14,10 +14,16 @@ struct Node {
     }
 
     void update(int x) {
-        val = x;
+        val += x;
     }
 
-} st[N * 28];
+} st[N * 40];
+
+
+int copy(int i) {
+    st[++ id] = st[i];
+    return id;
+}
 
 int build(int l = 0, int r = n - 1) {
     if(l == r) {
@@ -33,8 +39,9 @@ int build(int l = 0, int r = n - 1) {
 
 int update(int i, int pos, int val, int l = 0, int r = n - 1) {
     if(l == r) {
-        st[++ id].update(val);
-        return id;
+        int cid = copy(i);
+        st[cid].update(val);
+        return cid;
     }
     int m = (l + r) >> 1;
     int lc = st[i].lc, rc = st[i].rc;
@@ -54,11 +61,3 @@ Node get(int i, int x, int y, int l = 0, int r = n - 1) {
     res.merge(lc, rc, -1, -1);
     return res;
 }
-
-int copy(int i) {
-    st[++ id] = st[i];
-    return id;
-}
-
-
-//https://cses.fi/problemset/result/11465821/
