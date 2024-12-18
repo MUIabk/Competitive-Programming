@@ -36,3 +36,6 @@ struct LiChao {
         else return max(st[i](x), query(m + 1, r, x, i << 1 | 1));
     }
 };
+
+
+//https://codeforces.com/gym/316406/submission/295889966
