@@ -37,13 +37,10 @@ int update(int i, int pos, int val, int l = 0, int r = n - 1) {
         return id;
     }
     int m = (l + r) >> 1;
-    if(pos <= m) {
-        int lc = update(st[i].lc, pos, val, l, m);
-        st[++ id].merge(st[lc], st[st[i].rc], lc, st[i].rc);
-    } else {
-        int rc = update(st[i].rc, pos, val, m + 1, r);
-        st[++ id].merge(st[st[i].lc], st[rc], st[i].lc, rc);
-    }
+    int lc = st[i].lc, rc = st[i].rc;
+    if(pos <= m) lc = update(st[i].lc, pos, val, l, m);
+    else rc = update(st[i].rc, pos, val, m + 1, r);
+    st[++ id].merge(st[lc], st[rc], lc, rc);
     return id;
 }
 
