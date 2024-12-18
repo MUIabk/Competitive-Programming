@@ -61,3 +61,7 @@ Node get(int i, int x, int y, int l = 0, int r = n - 1) {
     res.merge(lc, rc, -1, -1);
     return res;
 }
+
+
+//normal - https://cses.fi/problemset/result/11465880/
+//lazy - https://codeforces.com/contest/707/submission/297095713
