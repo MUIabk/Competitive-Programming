@@ -59,3 +59,6 @@ int copy(int i) {
     st[++ id] = st[i];
     return id;
 }
+
+
+//https://cses.fi/problemset/result/11465821/
