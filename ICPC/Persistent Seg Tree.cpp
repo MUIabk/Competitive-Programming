@@ -45,7 +45,7 @@ int update(int i, int pos, int val, int l = 0, int r = n - 1) {
 }
 
 Node get(int i, int x, int y, int l = 0, int r = n - 1) {
-    if(x > y or l > y or r < x) return 0;
+    if(x > y or l > y or r < x) return Node();
     if(x <= l and r <= y) return st[i];
     int m = (l + r) >> 1;
     Node res, lc, rc;
