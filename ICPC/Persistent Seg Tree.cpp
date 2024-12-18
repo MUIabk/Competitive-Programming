@@ -7,10 +7,16 @@ struct Node {
         val = x;
         lc = rc = - 1;
     }
+
     void merge(Node &l, Node &r, int lid, int rid) {
         val = l.val + r.val;
         lc = lid, rc = rid;
     }
+
+    void update(int x) {
+        val = x;
+    }
+
 } st[N * 28];
 
 int build(int l = 0, int r = n - 1) {
@@ -27,7 +33,7 @@ int build(int l = 0, int r = n - 1) {
 
 int update(int i, int pos, int val, int l = 0, int r = n - 1) {
     if(l == r) {
-        st[++ id] = Node(val);
+        st[++ id].update(val);
         return id;
     }
     int m = (l + r) >> 1;
