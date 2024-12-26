@@ -5,26 +5,20 @@ struct MinCostFlow {
 		flow_t cap, flow;
 		cost_t cost;
 	};
- 
 	static constexpr flow_t flow_inf = numeric_limits<flow_t>::max() / 2;
 	static constexpr cost_t cost_inf = numeric_limits<cost_t>::max() / 2;
- 
 	int n;
 	vector<Edge> edges;
 	vector<vector<int>> a;
- 
 	explicit MinCostFlow(int _n): n(_n), a(_n) {}
- 
 	void add_edge(int u, int v, flow_t cap, cost_t cost) {
 		a[u].push_back(edges.size());
 		edges.push_back({u, v, cap, 0, cost});
 		a[v].push_back(edges.size());
 		edges.push_back({v, u, 0, 0, -cost});
 	}
- 
 	vector<int> eid;
 	vector<cost_t> dist;
- 
 	void ford_bellman(int s) {
 		dist.assign(n, cost_inf);
 		dist[s] = 0;
@@ -45,7 +39,6 @@ struct MinCostFlow {
 			}
 		}
 	}
- 
 	bool build_path(int s, int t) {
 		eid.assign(n, -1);
 		vector<cost_t> d(n, cost_inf);
@@ -75,7 +68,6 @@ struct MinCostFlow {
 		}
 		return eid[t] > -1;
 	}
- 
 	cost_t min_cost_k_flow(int s, int t, flow_t flow) {
 		ford_bellman(s);
 		cost_t ans = 0;
@@ -100,7 +92,6 @@ struct MinCostFlow {
 		}
 		return ans;
 	}
- 
 	pair<flow_t, cost_t> min_cost_max_flow(int s, int t) {
 		ford_bellman(s);
 		flow_t total_flow = 0;
@@ -126,7 +117,6 @@ struct MinCostFlow {
 		}
 		return {total_flow, total_cost};
 	}
- 
 	pair<flow_t, cost_t> min_cost_any_flow(int s, int t) {
 		ford_bellman(s);
 		flow_t total_flow = 0;
@@ -154,5 +144,11 @@ struct MinCostFlow {
 			}
 		}
 		return {total_flow, total_cost};
+	}
+	vector<Edge> get_edges() {
+		vector<Edge> e;
+		for(int i = 0; i < edges.size(); i += 2) {
+			e.push_back(edges[i]);
+		} return e;
 	}
 };
