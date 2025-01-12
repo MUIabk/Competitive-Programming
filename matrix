@@ -1,7 +1,7 @@
 template<class T> 
 struct Mat {
-    //x * mat -> [from][to]
-    //mat * x -> [to][from]
+    //dp * mat -> [from][to]
+    //mat * dp -> [to][from]
     int n, m;
     vector<vector<T>> a;
     vector<Mat> mat;   
