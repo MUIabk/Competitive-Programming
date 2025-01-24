@@ -19,14 +19,24 @@ struct Seg{
         return ans;
     }
     template <typename F>
-    int get_first(int tl, int tr, int i, int ql, int qr, F &check) {
+    int get_first(int tl, int tr, int i, int ql, int qr, F &&check) {
         if(tl > qr or tr < ql) return -1;
-        if(!check(seg[i].val)) return -1;
+        if(!check(seg[i])) return -1;
         if(tl == tr) return tl;
         int mid = (tl + tr) / 2;
         int left = get_first(tl, mid, i << 1, ql, qr, check);
         if(~ left) return left;
         return get_first(mid + 1, tr, i << 1 | 1, ql, qr, check);
+    }
+    template <typename F>
+    int get_last(int tl, int tr, int i, int ql, int qr, F &&check) {
+        if(tl > qr or tr < ql) return -1;
+        if(!check(seg[i])) return -1;
+        if(tl == tr) return tl;
+        int mid = (tl + tr) / 2;
+        int right = get_last(mid + 1, tr, i << 1 | 1, ql, qr, check);
+        if(~ right) return right;
+        return get_last(tl, mid, i << 1, ql, qr, check);
     }
     Seg(int _n){
         n = _n;
@@ -35,20 +45,22 @@ struct Seg{
     void update(int idx,int val){ _update(1,0,n - 1,idx,val); }
     T query(int l,int r){ return _query(1,0,n - 1,l,r); }
     template <typename F> 
-    int get_first(int l, int r, F &check) { return get_first(0, n - 1, 1, l, r, check);}
+    int get_first(int l, int r, F &&check) { return get_first(0, n - 1, 1, l, r, check);}
+    template <typename F> 
+    int get_last(int l, int r, F &&check) { return get_last(0, n - 1, 1, l, r, check);}
 };
 struct Node{
-    int val;
+    int mx;
     Node(){
-        val=0;
+        mx = 0;
     }
     Node(int x){
-        val=x;
+        mx = x;
     }
     void merge(Node l,Node r){
-        val=max(l.val,r.val);
+        mx = max(l.mx, r.mx);
     }
     void upd(int val){
-        this->val=val;
+        mx = val;
     }
 };
