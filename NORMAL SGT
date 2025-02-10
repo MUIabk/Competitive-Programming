@@ -1,66 +1,99 @@
-template<typename T>
-struct Seg{
-    int n;
-    vector<T> seg;
-    void _update(int i,int l,int r,int idx,int val){
-        if(l == r) {seg[i].upd(val); return;}
-        int mid = l+r>>1;
-        if(idx<=mid) _update(i << 1,l,mid,idx,val);
-        else _update(i << 1 | 1,mid+1,r,idx,val);
-        seg[i].merge(seg[i << 1],seg[i << 1 | 1]);
+template <typename T> struct Seg {
+  int n;
+  vector<T> seg;
+  void build(int i, int l, int r, vector<int> &val) {
+    if (l == r) {
+      seg[i] = T(val[l], l);
+      return;
     }
-    T _query(int i,int l,int r,int ll,int rr){
-        if(l>r) return T();
-        if(r < ll || l > rr) return T();
-        if(ll<=l && rr>=r) return seg[i];
-        int mid = l+r>>1;
-        T ans;
-        ans.merge(_query(i << 1,l,mid,ll,rr),_query(i << 1 | 1,mid+1,r,ll,rr));    
-        return ans;
+    int mid = (l + r) >> 1;
+    build(i << 1, l, mid, val);
+    build(i << 1 | 1, mid + 1, r, val);
+    seg[i].merge(seg[i << 1], seg[i << 1 | 1]);
+  }
+  void _update(int i, int l, int r, int idx, int val) {
+    if (l == r) {
+      seg[i].update(val, l);
+      return;
     }
-    template <typename F>
-    int get_first(int tl, int tr, int i, int ql, int qr, F &&check) {
-        if(tl > qr or tr < ql) return -1;
-        if(!check(seg[i])) return -1;
-        if(tl == tr) return tl;
-        int mid = (tl + tr) / 2;
-        int left = get_first(tl, mid, i << 1, ql, qr, check);
-        if(~ left) return left;
-        return get_first(mid + 1, tr, i << 1 | 1, ql, qr, check);
-    }
-    template <typename F>
-    int get_last(int tl, int tr, int i, int ql, int qr, F &&check) {
-        if(tl > qr or tr < ql) return -1;
-        if(!check(seg[i])) return -1;
-        if(tl == tr) return tl;
-        int mid = (tl + tr) / 2;
-        int right = get_last(mid + 1, tr, i << 1 | 1, ql, qr, check);
-        if(~ right) return right;
-        return get_last(tl, mid, i << 1, ql, qr, check);
-    }
-    Seg(int _n){
-        n = _n;
-        seg.resize(4*n,T());
-    }
-    void update(int idx,int val){ _update(1,0,n - 1,idx,val); }
-    T query(int l,int r){ return _query(1,0,n - 1,l,r); }
-    template <typename F> 
-    int get_first(int l, int r, F &&check) { return get_first(0, n - 1, 1, l, r, check);}
-    template <typename F> 
-    int get_last(int l, int r, F &&check) { return get_last(0, n - 1, 1, l, r, check);}
+    int mid = (l + r) >> 1;
+    if (idx <= mid)
+      _update(i << 1, l, mid, idx, val);
+    else
+      _update(i << 1 | 1, mid + 1, r, idx, val);
+    seg[i].merge(seg[i << 1], seg[i << 1 | 1]);
+  }
+  T _query(int i, int l, int r, int ll, int rr) {
+    if (l > r)
+      return T();
+    if (r < ll || l > rr)
+      return T();
+    if (ll <= l && rr >= r)
+      return seg[i];
+    int mid = (l + r) >> 1;
+    T ans;
+    ans.merge(_query(i << 1, l, mid, ll, rr),
+              _query(i << 1 | 1, mid + 1, r, ll, rr));
+    return ans;
+  }
+  template <typename F>
+  int get_first(int tl, int tr, int i, int ql, int qr, F &&check) {
+    if (tl > qr or tr < ql)
+      return -1;
+    if (!check(seg[i]))
+      return -1;
+    if (tl == tr)
+      return tl;
+    int mid = (tl + tr) / 2;
+    int left = get_first(tl, mid, i << 1, ql, qr, check);
+    if (~left)
+      return left;
+    return get_first(mid + 1, tr, i << 1 | 1, ql, qr, check);
+  }
+  template <typename F>
+  int get_last(int tl, int tr, int i, int ql, int qr, F &&check) {
+    if (tl > qr or tr < ql)
+      return -1;
+    if (!check(seg[i])) 
+        return -1;
+    if (tl == tr)
+      return tl;
+    int mid = (tl + tr) / 2;
+    int right = get_last(mid + 1, tr, i << 1 | 1, ql, qr, check);
+    if (~right)
+      return right;
+    return get_last(tl, mid, i << 1, ql, qr, check);
+  }
+  Seg(int _n) {
+    n = _n;
+    seg.resize(4 * n, T());
+  }
+  Seg(int _n, vector<int> &val) {
+    n = _n;
+    seg.resize(4 * n, T());
+    build(1, 0, n - 1, val);
+  }
+  void update(int idx, int val) { _update(1, 0, n - 1, idx, val); }
+  T query(int l, int r) { return _query(1, 0, n - 1, l, r); }
+  template <typename F> int get_first(int l, int r, F &&check) {
+    return get_first(0, n - 1, 1, l, r, check);
+  }
+  template <typename F> int get_last(int l, int r, F &&check) {
+    return get_last(0, n - 1, 1, l, r, check);
+  }
 };
-struct Node{
-    int mx;
-    Node(){
-        mx = 0;
-    }
-    Node(int x){
-        mx = x;
-    }
-    void merge(Node l,Node r){
-        mx = max(l.mx, r.mx);
-    }
-    void upd(int val){
-        mx = val;
-    }
+struct Node {
+  int val;
+  Node() { 
+    val = 0;
+  }
+  Node(int x, int pos) { 
+    val = x;
+  }
+  void merge(Node l, Node r) { 
+    val = max(l.val, r.val);
+  }
+  void update(int nval, int pos) { 
+    *this = Node(nval, pos);
+  }
 };
